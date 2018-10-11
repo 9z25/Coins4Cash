@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Coins4Cash</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Terminal+Dosis" />
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+
+    <style>
+
+#virtual , #neighborhood {
+display:inline-block;
+/**other codes**/
+}
+
+     fieldset {
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove (internal value);
+}
+
+        .fb-like-box {
+        background:#e59f1d;
+        width:320px;
+        padding:0px;
+        margin:10px 0px;
+        border:solid 6px #e9e8e8;
+        }
+          #coins-gps{
+        
+          }
+          #bitcoin-amount{
+            width:11%;position:absolute;bottom:20px;left:15%;background:#f60;visibility:inherit;
+        
+          }
+        
+            #map{
+              visibility:inherit;
+              float:center;
+              height: -30px;
+            }
+            .container {
+            position: relative;
+        }
+        
+        #user-character{
+          float:center;
+          visibility:inherit;
+        }
+        
+        .con{width:200px; top:0;bottom:0;left:0; position:absolute;background:#ff0;}
+        
+        #post{width:11%;position:absolute;bottom:100px;left:0;background:#f60;visibility:inherit;}
+        
+        .bottom{width:200px;height:50px;position:absolute;bottom:90;left:0;background:#f60;}
+        #return-from-map{position:absolute;bottom:50px;top:85%;left:0;background:#06f;}
+        
+            .default {
+              background: none;
+              color: #666;
+            }
+            .group:before,
+            .group:after {
+              content: "";
+              display: table;
+            }
+            .group:after {
+              clear: both;
+            }
+            .group {
+              background: #eaeaed;
+              border-radius: 6px;
+              clear: both;
+              *zoom: 1;
+            }
+        
+            header,
+            section,
+            aside,
+            footer {
+              margin: 0 1.5% 24px 1.5%;
+            }
+            section {
+              width: 100%;
+            }
+            footer {
+              margin-bottom: 0;
+            }
+    </style>
+
+</head>
+<script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+
+<body>
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+<!-- Welcome section -->
+            <div class="panel-landing" id="section-1">
+                <div class="avatar-section">
+                    <img src="http://bestanimations.com/Money/Coins/gold-coins-animated-gif.gif" class="img-rounded avatar" id="avatar-image">
+                </div>
+                <h1 class="landing-heading">Coins4Cash</h1>
+                <p class="lead">
+                    <a href="#" class="btn btn-primary btn-lg" id="signin-button">Sign In for access</a>
+                </p>
+            </div>
+
+<!-- Login section -->
+            <div class="panel-welcome hide" id="section-2">
+                <div class="avatar-section">
+                    <img src="http://bestanimations.com/Money/Coins/gold-coins-animated-gif.gif" class="img-rounded avatar" id="avatar-image">
+                </div>
+                <h1>Enter your alias</h1>
+                <div class="container">
+                    <form name="frm" method="POST">
+                        <input type="text" name="alias">
+                        <br />
+                        <!--<input type="submit" class="btn btn-primary" value ="Send Message" />-->
+                        <input type="text" name="pass">
+                        <br />
+                    </form>
+                    <p class="lead">
+                        <a href="#" class="btn btn-primary btn-lg" id="enter">
+                        Enter
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+
+<!-- Main Menu -->
+            <div class="panel-welcome hide" id="section-3">
+                <h1>Welcome <span style="color:blue" id="alias-input"></span></h1>
+                <div class="container">
+                    <a href="#" class="btn btn-primary btn-lg" id="trade-coins">Trade Coins</a>
+                    <a href="#" class="btn btn-primary btn-lg" id="shops">Go shopping</a>
+                    <br />
+                    <br />
+                    <a href="#" class="btn btn-primary btn-lg" id="store-button">Store</a>
+                    <br />
+                    <br />
+                    <p class="lead">
+                    </p>
+
+                </div>
+            </div>
+
+
+<!-- Trade coins section -->
+            <div class="panel-landing" id="coins-gps">
+                <div id="container">
+                    <h2>
+                        <div id="map" style="width:100%; height:500px;"></div>
+                    </h2>
+                </div>
+                <p class="lead">
+                    <a href="#" class="btn btn-primary btn-lg" class="map-view-buttons-left" id="post">Post up</a>
+                </p>
+                <a href="#" class="btn btn-primary btn" class="map-view-buttons-left" id="return-from-map">Menu</a>
+                <script>
+                </script>
+                <h2 id="bitcoin-amount">0.0 BTC</h2>
+
+                <div id="image_block"><img src="http://lh5.ggpht.com/lRsLAX4wPXD-DiuSMhkioT-376erWGj2fIxJ-RU1oXUQL4JyZ3Ky6iKiqJ5bPT7KNQ=w300" style="max-height: 120px; max-width: 160px;" id="user-character" /></div>
+            </div>
+
+<!-- Store listing section -->
+            <div class="panel-landing" id="store-list">
+                <div class="container">
+                    <h1 class="landing-heading">Store listings</h1>
+                    <a href="#" class="btn btn-primary btn-lg" id="virtual">Virtual</a>
+                    <a href="#" class="btn-sm" id="neighborhood">Neighborhood</a>
+                    <div data-role="content">
+                        <ul id="listview-stores">
+                            <li class="btn btn-primary btn-lg" id="store1">Roadside Store
+                                <br> Music and food!
+                                <br> 1.2 mi; Mission Bay
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <a href="#" class="btn btn-primary btn-lg" id="return-from-browser">Menu</a>
+                    </p>
+                </div>
+            </div>
+
+<!-- Store view -->
+
+            <div class="panel-landing" id="store-view">
+                <div class="container">
+                    <h1 class="landing-heading">{{ Name of Store }}</h1>
+                    <br> 1.2 mi away, Mission Bay
+                    <div data-role="content">
+                        <ul id="listview">
+                            <p>
+                            <a href="#" class="btn btn-primary btn-lg" id="test1">Rap mixtape
+                                <br> Compact Disc
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" class="btn btn-primary btn-lg" id="test2">Deli Sandwich
+                                <br> Food/drink
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" class="btn btn-primary btn-lg" id="test3">Pepsi can
+                                <br> Food/drink
+                            </a>
+                        </p>
+
+                        </ul>
+                    </div>
+                    <p>
+                        <a href="#" class="btn btn-primary btn-lg" id="return-from-storeview">Return to listings</a>
+                    </p>
+                </div>
+            </div>
+
+<!-- Item view -->
+
+            <div class="panel-landing" id="item-view">
+                <div class="container">
+                    <h1 class="landing-heading">{{ Name of Item }}</h1>
+                     <div data-role="content">
+                    <form>
+                        <fieldset>
+                        <li>Name: Rap Mixtape</li>
+                        <li>Type: Physical Good</li>
+                        <li>Price: $3.00</li>
+                        <li>Condition: Brand New</li>
+                        <p class="justify"><li>Description: Bass music, trap</li>
+                        </p>
+                        <p>
+                         <fieldset>
+                        Quantity:
+                        <input type="text" name="quantity_to_buy">
+                        <p>
+                        <a href="#" id="store-location-track" style type="submit" class="btn btn-primary">location</a>
+                        </p>   
+                        <a href="#" id="buy-item" style type="submit" class="btn btn-primary">Buy</a>
+                    </fieldset>
+                    </form>
+                </div>
+
+                    <p>
+                        <a href="#" class="btn btn-primary btn-lg" id="leave-item-detail">Return</a>
+                    </p>
+                </div>
+            </div>
+
+<!-- Personal store section -->
+            <div class="panel-landing" id="store">
+                <div class="avatar-section">
+                    <img src="http://bestanimations.com/Money/Coins/gold-coins-animated-gif.gif" class="img-rounded avatar" id="avatar-image">
+                </div>
+                <h1 class="landing-heading">Store</h1>
+                <p class="lead">
+                    <div data-role="content">
+                        <ul id="listview">
+                            <li class="fb-like-box">Store Item1
+                                <br> Compact Disc
+                            </li>
+                        </ul>
+                    </div>
+                </p>
+
+                <a href="#" class="btn btn-primary btn-lg" id="add_catalog_item_button">Add Item</a>
+                <p>
+                    <p>
+                        <a href="#" class="btn btn-primary btn-lg" id="return-from-storemenu">Menu</a>
+                    </p>
+            </div>
+
+
+<!-- add catalog item section -->
+            <div class="panel-landing" id="add_item_block">
+                <div class="avatar-section">
+                    <img src="http://bestanimations.com/Money/Coins/gold-coins-animated-gif.gif" class="img-rounded avatar" id="avatar-image">
+                </div>
+                <h1 class="landing-heading">Store</h1>
+                <div class="container">
+                    <form>
+                        <fieldset>
+                        Name:
+                        <input type="text" name="catalog_item_name_input"> Type:
+                        <input type="text" name="catalog_item_type">Price:
+                        <input type="text" name="catalog_item_price">Condition:
+                        <input type="text" name="catalog_item_condition">
+                        <p class="justify">Description:
+                            <input type="text" name="catalog_item_desc">
+                        </p>
+                        <a href="#" id="create-sc-item" style type="submit" class="btn btn-primary">Create Item</a>
+                        <a href="#" id="cancel-sc-item" style type="submit" class="btn btn-primary">Cancel</a>
+                    </fieldset>
+                    </form>
+                </div>
+            </div>
+
+
+<!-- Site wrapper -->
+        </div>
+    </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?v=3.20key=AIzaSyBuJ9Ay8bMhjKglQTeKS8S-4wEhme6KKVc&callback=initMap">
+    </script>
+    <script src="bundle.js"></script>
+    <script src="coins-gps.js"></script>
+    <script src="DBhandler.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
