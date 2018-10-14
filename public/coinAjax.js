@@ -1,54 +1,12 @@
-$.ajaxTransport("+binary", function(options, originalOptions, jqXHR){
-    // check for conditions and support for blob / arraybuffer response type
-    if (window.FormData && ((options.dataType && (options.dataType == 'binary')) || (options.data && ((window.ArrayBuffer && options.data instanceof ArrayBuffer) || (window.Blob && options.data instanceof Blob)))))
-    {
-        return {
-            // create new XMLHttpRequest
-            send: function(headers, callback){
-        // setup all variables
-                var xhr = new XMLHttpRequest(),
-        url = options.url,
-        type = options.type,
-        async = options.async || true,
-        // blob or arraybuffer. Default is blob
-        dataType = options.responseType || "blob",
-        data = options.data || null,
-        username = options.username || null,
-        password = options.password || null;
-                    
-                xhr.addEventListener('load', function(){
-            var data = {};
-            data[options.dataType] = xhr.response;
-            // make callback and send data
-            callback(xhr.status, xhr.statusText, data, xhr.getAllResponseHeaders());
-                });
- 
-                xhr.open(type, url, async, username, password);
-                
-        // setup custom headers
-        for (var i in headers ) {
-            xhr.setRequestHeader(i, headers[i] );
-        }
-                
-                xhr.responseType = dataType;
-                xhr.send(data);
-            },
-            abort: function(){
-                jqXHR.abort();
-            }
-        };
-    }
-});
-
 var coinAjax = {
 //get list of connected peers
 getConnectedPeers: function(){
-    var getPeers = $.ajax({
-    async: false,
+   var getPeers = $.ajax({
     url: 'http://localhost:4002/ob/peers',
     headers: {
         'Authorization':'Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==',
     },
+    async: false,
     method: 'GET',
     dataType: 'json',
     success: function(data){
@@ -56,15 +14,16 @@ getConnectedPeers: function(){
     },
 
     error: function(a,b,c) {
-        alert(a + b + c)
-    },
-  });
+      alert('process error' + JSON.stringify(a) +" :: " + b + " :: " + c)
+    }
+})
 
+   return JSON.stringify(getPeers.responseText)
+},
 
 //map each segment of array as parameter for getStoreData() func
 //peerList.map(getStoreData)
-return JSON.parse(getPeers.responseText)
-},
+
 
 //get shop listings thru ajax call **peer ID hash required**
 getPeerListing: function(pID){
@@ -80,40 +39,40 @@ getPeerListing: function(pID){
     },
 
     error: function(a,b,c) {
-        alert(a + b + c)
+      alert('process error' + JSON.stringify(a) +" :: " + b + " :: " + c)
     },
   });
 return JSON.parse(openStore.responseText)
-},
+}
 
 //load Avatar for store button **image hash required**
 getImg: function (imgHash){
-    var getImage = $.ajax({
+var getImage = $.ajax({
     async: false,
-    url: 'https://cloudfour.com/examples/img-currentsrc/images/kitten-large.png',
+    url: 'http://localhost:4002/ob/images/' + imgHash,
     headers: {
-        'Content-Type':'image/png','X-Requested-With':'XMLHttpRequest',
         'Authorization':'Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==',
     },
-    dataType : "binary",
-    processData : false,
     method: 'GET',
-    //mimeType: 'text/plain; charset=x-user-defined',
+    dataType: 'img',
     success: function(data){
     },
 
     error: function(a,b,c) {
+      alert('process error' + JSON.stringify(a) +" :: " + b + " :: " + c)
     },
-  }).done(function( data, textStatus, jqXHR ) {
-    return base64.encode(jqXHR)
   });
 
-},
+var content = Base64.btoa(getImage.responseText)
+
+return content
+
+}
 
 //get data on store thru ajax call **peer ID has required**
 getStoreData: function(pID){
 
-var getProfile = $.ajax({
+var loadcoinAjax = $.ajax({
     async: false,
     url: 'http://localhost:4002/ob/profile/' + pID,
     headers: {
@@ -125,10 +84,10 @@ var getProfile = $.ajax({
     },
 
     error: function(a,b,c) {
-    }
+      alert('process error' + JSON.stringify(a) +" :: " + b + " :: " + c)
+    },
   })
 
-return JSON.parse(getProfile.responseText)
+return JSON.parse(loadcoinAjax.responseText)
 
-}
 }
