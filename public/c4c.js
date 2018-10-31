@@ -1,16 +1,12 @@
-var c4c = {
+var c4c = new Object()
 //capture store name, short desc, and avatar
-loadShopList: function(){
-    	var pID = coinAjax.getConnectedPeers()[1]
-    	for(var t in pID){
-    		coinAjax.getStoreData(pID[t])
-    		} 	
-    },
-getAvatar: function(){
+c4c.loadShopList = function(){
+    	var pID = coinAjax.getConnectedPeers()
+    	return coinAjax.getStoreData(pID)
+        }
+c4c.getAvatar = function(){
 	    return coinAjax.getImg(pID)
-        },
-getItemListing: function(){
+        }
+c4c.getItemListing = function(){
 	    return coinAjax.getPeerListing(pID)
         }
-        }
-

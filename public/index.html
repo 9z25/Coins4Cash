@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -95,10 +95,6 @@ display:inline-block;
     </style>
 
 </head>
-<script>
-    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
-</script>
-
 <body>
     <div class="site-wrapper">
         <div class="site-wrapper-inner">
@@ -164,7 +160,7 @@ display:inline-block;
                 <p class="lead">
                     <a href="#" class="btn btn-primary btn-lg" class="map-view-buttons-left" id="post">Post up</a>
                 </p>
-                <a href="#" class="btn btn-primary btn-lg" class="map-view-buttons-left" id="return-from-map">Menu</a>
+                <a href="#" class="btn btn-primary btn" class="map-view-buttons-left" id="return-from-map">Menu</a>
                 <script>
                 </script>
                 <h2 id="bitcoin-amount">0.0 BTC</h2>
@@ -177,9 +173,9 @@ display:inline-block;
                 <div class="container">
                     <h1 class="landing-heading">Store listings</h1>
                     <a href="#" class="btn btn-primary btn-lg" id="virtual">Virtual</a>
-                    <a href="#" class="btn btn-primary btn-lg" id="neighborhood">Neighborhood</a>
+                    <a href="#" class="btn-sm" id="neighborhood">Neighborhood</a>
                     <div data-role="content">
-                        <ul id="listview">
+                        <ul id="listview-stores">
                             <li class="btn btn-primary btn-lg" id="store1">Roadside Store
                                 <br> Music and food!
                                 <br> 1.2 mi; Mission Bay
@@ -263,6 +259,8 @@ display:inline-block;
                 </div>
                 <h1 class="landing-heading">Store</h1>
                 <p class="lead">
+                    <a href="#" class="btn btn-primary btn-lg" class="map-view-buttons-left" id="putGPS">Post Location</a>
+                    <p id="demo"></p>
                     <div data-role="content">
                         <ul id="listview">
                             <li class="fb-like-box">Store Item1
@@ -314,9 +312,9 @@ display:inline-block;
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?v=3.20key=AIzaSyBuJ9Ay8bMhjKglQTeKS8S-4wEhme6KKVc&callback=initMap">
     </script>
-    <script src="bundle.js"></script>
+    <script src="c4c.js"></script>
     <script src="coins-gps.js"></script>
-    <script src="DBhandler.js"></script>
+    <script src="coinAjax.js"></script>
     <script src="app.js"></script>
 
 </body>

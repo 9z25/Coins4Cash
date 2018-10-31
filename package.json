@@ -1,12 +1,11 @@
 {
-  "name": "Coins4Cash",
+  "name": "hello-blockstack",
   "version": "0.0.0",
   "description": "A simple Blockstack app",
   "main": "index.js",
   "scripts": {
-    "browserify": "browserify requires.js -o public/bundle.js",
-    "start": "npm run browserify; node server.js;",
-    "watch": "watchify requires.js -o public/bundle.js"
+    "build": "browserify requires.js -o public/bundle.js",
+    "start": "npm run build && node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,24 +18,13 @@
   },
   "homepage": "https://github.com/blockstack/hello-blockstack#readme",
   "devDependencies": {
-    "6.004x": "file:jade",
     "browserify": "^14.5.0",
     "express": "^4.15.2",
     "opn": "^4.0.2"
   },
   "dependencies": {
-    "better-sqlite3": "file:better-sqlite3",
-    "blockstack": "^0.11.0",
-    "body-parser": "^1.18.2",
-    "connect": "^3.6.6",
-    "cookie-parser": "^1.4.3",
-    "gps-tracking": "^1.1.1",
-    "gps-tracking-demo": "file:gps-tracking-demo",
-    "jade": "^1.11.0",
-    "livereload": "^0.6.3",
-    "pug": "^2.0.0-rc.4",
-    "socket.io": "^2.1.1",
-    "sqlite3": "^3.1.13",
-    "watchify": "^3.9.0"
+    "blockstack": "^0.15.0",
+    "body-parser": "^1.18.3",
+    "fetch": "^1.1.0"
   }
 }
