@@ -260,13 +260,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById('store-view').style.display = 'none';
         document.getElementById('item-view').style.display = 'none';
 
-        var pIDs = coinAjax.getConnectedPeers().slice(0, 3);
-        pIDs.forEach(function(i) {
-            var store = coinAjax.getStoreData(i);
-            listStore(store);
+function processStoreJSON(pA){
+var arr = JSON.parse(pA);
+var sli = arr.slice(0,3)
+sli.forEach((i) => {
+    alert(i);
+        var store = coinAjax.getStoreData(i);
+        store.then((res) => {
+            var storeJSON = res.text();
+            storeJSON.then((text) => {
+                alert(text);
+                //listStore(store);
+            }).catch((e) => {
+                alert('somtin wong wit getStoreData()! You need to figga it out.')
+            });
         });
+})
 
-    });
+}
+
+var peers = coinAjax.getConnectedPeers();
+peers.then((res) => {
+    var coordinates = res.text();
+    coordinates.then((text) => {
+alert(text);
+processStoreJSON(text);
+}).catch((e) => {
+    alert('somting wong wit getConnectedPeers()!  ???' + e.toString());
+});
+});
+});
 
     // Return to main menu from shop listings
     document.getElementById('return-from-browser').addEventListener('click', function(event) {
@@ -332,6 +355,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('putGPS').addEventListener('click', function(event) {
      var x;
      var y;
+var peers = coinAjax.getConnectedPeers();
+peers.then((res) => {
+    var coordinates = res.text();
+
+
+    coordinates.then((text) => {
+alert(text);
+}).catch((e) => {
+    alert('somting wong!  ???' + e.toString());
+});
+})
 getLocation();
 function getLocation() {
     if (navigator.geolocation) {
@@ -343,7 +377,6 @@ function getLocation() {
 
 function showPosition(position) {
     x = position.coords.latitude + "," + position.coords.longitude;
-    alert(x);
 
     var data = {
     "peerID": "QmdKPnYfjENRTBFVPirRjbgA5F5dG72o88uyiqmDMwRoin",
@@ -368,7 +401,6 @@ putGPS.then((res) => {
 
 
     coordinates.then((text) => {
-        alert("RESPONSEE :: " + text);
 var y = document.getElementById('demo');
 y.innerHTML= text;
 }).catch((e) => {
@@ -407,6 +439,8 @@ function showError(error) {
 
 
 });
+
+
 
 
 function listStore(profile) {

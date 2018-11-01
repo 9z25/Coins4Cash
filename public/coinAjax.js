@@ -42,57 +42,33 @@ $.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
 
 var coinAjax = {
     //get list of connected peers
-    getConnectedPeers: function() {
-        var guids;
-        var getPeers = $.ajax({
+    getConnectedPeers:() => {
+        return fetch('http://localhost:5000/ob/peers', {
             async: false,
-            url: 'http://localhost:4002/ob/peers',
             headers: {
-                'Authorization': 'Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==',
-                'Access-Control-Allow-Origin': '*',
+                "Content-type": "application/json",
             },
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                guids = data;
-            },
-
-            error: function(a, b, c) {
-                var msg = JSON.stringify(a);
-                alert("getConnectedPeers: " + msg + " :: " + b + " :: " + c);
-            },
+            method: "GET",
+            mode: "cors",
+            crossDomain: true,
         });
-
-
-        //map each segment of array as parameter for getStoreData() func
-        //peerList.map(getStoreData)
-        //return JSON.parse(getPeers.responseText);
-        return guids;
     },
 
     //get shop listings thru ajax call **peer ID hash required**
-    getPeerListings: function(pID) {
-        var openStore = $.ajax({
+    getPeerListings:(pID) => {
+        return fetch('http://localhost:5000/ob/listings/' + pID, {
             async: false,
-            url: 'http://localhost:4002/ob/listings/' + pID,
             headers: {
-                'Authorization': 'Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==',
+                "Content-type": "application/json",
             },
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {},
-
-            error: function(a, b, c) {
-                var msg = JSON.stringify(a);
-                alert("getPeerListings: " + msg + " :: " + b + " :: " + c);
-                return;
-            },
-        }).responseText;
-        return JSON.parse(openStore);
+            method: "GET",
+            mode: "cors",
+            crossDomain: true,
+        });
     },
 
     //load Avatar for store button **image hash required**
-    getImg: function(img) {
+    getImg:(img) => {
         return $.ajax({
             async: false,
             url: 'http://localhost:4002/ob/images/' + img,
@@ -108,30 +84,21 @@ var coinAjax = {
     },
 
     //get data on store thru ajax call **peer ID has required**
-    getStoreData: function(pID) {
-        var getProfile = $.ajax({
+    getStoreData:(pID) => {
+        return fetch('http://localhost:5000/ob/getStore/' + pID, {
             async: false,
-            url: 'http://localhost:4002/ob/profile/' + pID,
             headers: {
-                'Authorization': 'Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==',
+                "Content-type": "application/json",
             },
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {},
-
-            error: function(a, b, c) {
-                var msg = JSON.stringify(a);
-                alert("getStoreData: " + msg + " :: " + b + " :: " + c);
-            }
+            method: "GET",
+            mode: "cors",
+            crossDomain: true,
         });
-
-        return JSON.parse(getProfile.responseText);
 
     },
 
-    putGPS: function putData(gps){
-        alert('GPS :: ' + JSON.stringify(gps));
-        return fetch('http://localhost:5000/putGPS', {
+    putGPS:(gps) => {
+        return fetch('http://localhost:5000/ob/putGPS', {
             async: false,
             headers: {
                 "Content-type": "application/json",
