@@ -142,7 +142,7 @@ app.get('/ob/profile/', function(req, res) {
         sendGetResponse(data);
 
     }).catch((e) => {
-        console.log('sumting went wong wit my sto data, wook here => ' + e);
+        console.log('something went wrong with my store data, look here => ' + e);
     });
 
     //res.write('you posted:\n' + json.GPS);
@@ -211,7 +211,7 @@ app.get('/ob/peers/', function(req, res) {
         sendGetResponse(data);
 
     }).catch((e) => {
-        console.log('something went wrong wit peelIDs, look here => ' + e);
+        console.log('something went wrong wit peerIDs, look here => ' + e);
     });
 
     //res.write('you posted:\n' + json.GPS);
