@@ -1,4 +1,3 @@
-
 $.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
     // check for conditions and support for blob / arraybuffer response type
     if (window.FormData && ((options.dataType && (options.dataType == 'binary')) || (options.data && ((window.ArrayBuffer && options.data instanceof ArrayBuffer) || (window.Blob && options.data instanceof Blob))))) {
@@ -42,7 +41,7 @@ $.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
 
 var coinAjax = {
     //get list of connected peers
-    getConnectedPeers:() => {
+    getConnectedPeers: () => {
         return fetch('http://localhost:5000/ob/peers', {
             async: false,
             headers: {
@@ -55,7 +54,7 @@ var coinAjax = {
     },
 
     //get shop listings thru ajax call **peer ID hash required**
-    getPeerListings:(pID) => {
+    getPeerListings: (pID) => {
         return fetch('http://localhost:5000/ob/listings/' + pID, {
             async: false,
             headers: {
@@ -68,7 +67,7 @@ var coinAjax = {
     },
 
     //load Avatar for store button **image hash required**
-    getImg:(img) => {
+    getImg: (img) => {
         return $.ajax({
             async: false,
             url: 'http://localhost:4002/ob/images/' + img,
@@ -84,7 +83,7 @@ var coinAjax = {
     },
 
     //get data on store thru ajax call **peer ID has required**
-    getStoreData:(pID) => {
+    getStoreData: (pID) => {
         return fetch('http://localhost:5000/ob/getStore/' + pID, {
             async: false,
             headers: {
@@ -97,7 +96,7 @@ var coinAjax = {
 
     },
 
-    putGPS:(gps) => {
+    putGPS: (gps) => {
         return fetch('http://localhost:5000/ob/putGPS', {
             async: false,
             headers: {
@@ -105,7 +104,19 @@ var coinAjax = {
             },
             method: "PUT",
             mode: "cors",
-            body:JSON.stringify(gps),
+            body: JSON.stringify(gps),
+            crossDomain: true,
+        })
+    },
+    putProfile: (profile) => {
+        return fetch('http://localhost:5000/ob/putProfile', {
+            async: false,
+            headers: {
+                "Content-type": "application/json",
+            },
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(profile),
             crossDomain: true,
         })
     }

@@ -3,11 +3,60 @@
 
 <head>
     <title>Coins4Cash</title>
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Terminal+Dosis" />
-    <link rel="stylesheet" href="bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="app.css" />
+        <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+
+
+      
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    background-color: rgba(0,0,0,0.4);
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 #virtual , #neighborhood {
 display:inline-block;
@@ -141,6 +190,64 @@ display:inline-block;
                     <br />
                     <br />
                     <a href="#" class="btn btn-primary btn-lg" id="store-button">Store</a>
+                    <a href="#" class="btn btn-primary brn-lg" id="profile-button">Profile</a>
+  <h2>Modal Example</h2>
+  <!-- Trigger the modal with a button -->
+  <button id="myBtn" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+<!-- Modal content -->
+<div class="modal-content">
+  <div class="modal-header">
+    <span class="close">&times;</span>
+    <h2>Profile Config</h2>
+  </div>
+      <p>Enter Details:</p>
+  <div class="modal-body">
+                    <div class="container">
+                    <form name="profilefrm" method="POST">
+                        Name:<input type="text" name="name">
+                        <br />
+                        Location:<input type="text" name="location">
+                        <br />
+                        <!--<input type="submit" class="btn btn-primary" value ="Send Message" />-->
+                        About: <input type="text"
+       cols="40" 
+       rows="5" 
+       style="width:200px; height:50px;" 
+       name="about" 
+       id="about" 
+       value="" />
+                        <br />
+                        Short Description: <input type="text" name="shortDesc">
+                        <br />
+                        NSFW: <input type="checkbox" name="nsfw">
+                        <br />
+                        Vendor: <input type="checkbox" name="vendor">
+                        <br />
+                        Moderator: <input type="checkbox" name="moderator">
+                        <br />
+                        <h3>Contact Info</h3> 
+                        <br />
+                        Website: <input type="text" name="website">
+                        <br />
+                        Email: <input type="text" name="email">
+                        <br />
+                        Phone Number: <input type="text" name="phone">
+                        <br />
+                    </form>
+                    <p class="lead">
+
+    <p><a href="#" class="btn btn-primary btn-sm" id="save-profile">Save</a></p>
+  </div>
+  <div class="modal-footer">
+  </div>
+</div>
+    </div>
+  </div>
                     <br />
                     <br />
                     <p class="lead">
@@ -149,12 +256,39 @@ display:inline-block;
                 </div>
             </div>
 
+                    <script>// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}</script>
+
 
 <!-- Trade coins section -->
             <div class="panel-landing" id="coins-gps">
+                <h1>Welcome</h1>
                 <div id="container">
                     <h2>
-                        <div id="map" style="width:100%; height:500px;"></div>
+                        <!-- <div id="map" style="width:100%; height:500px;"></div> -->
                     </h2>
                 </div>
                 <p class="lead">
@@ -308,8 +442,7 @@ display:inline-block;
     </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
     <script async defer src="https://maps.googleapis.com/maps/api/js?v=3.20key=AIzaSyBuJ9Ay8bMhjKglQTeKS8S-4wEhme6KKVc&callback=initMap">
     </script>
     <script src="c4c.js"></script>

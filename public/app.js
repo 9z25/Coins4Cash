@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById('store-view').style.display = 'none';
         document.getElementById('item-view').style.display = 'none';
 
-        initMap();
+        //initMap();
     });
 
     // button that takes you back to main menu from the trade coin page
@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         //document.getElementById('store-view').style.display = 'none'
         //document.getElementById('item-view').style.display = 'none'
     });
-
     // Menu item that takes you to personal store
     document.getElementById('store-button').addEventListener('click', function(event) {
         document.getElementById('section-1').style.display = 'none';
@@ -178,7 +177,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById('store-list').style.display = 'none';
         document.getElementById('store-view').style.display = 'none';
         document.getElementById('item-view').style.display = 'none';
+
+//Get Profile
+        coinAjax.getStoreData().then((res) => {
+            res.text().then((json) => {
+                alert(json);
+            })
+        })
     });
+    // Menu item that takes you to personal store
+    document.getElementById('store-button').addEventListener('click', function(event) {
+        document.getElementById('section-1').style.display = 'none';
+        document.getElementById('section-2').style.display = 'none';
+        document.getElementById('section-3').style.display = 'none';
+        document.getElementById('coins-gps').style.display = 'none';
+        document.getElementById('store').style.display = 'block';
+        document.getElementById('add_item_block').style.display = 'none';
+        document.getElementById('store-list').style.display = 'none';
+        document.getElementById('store-view').style.display = 'none';
+        document.getElementById('item-view').style.display = 'none';
+
+//Get Profile
+        coinAjax.getStoreData().then((res) => {
+            res.text().then((json) => {
+                alert(json);
+            })
+        })
+    });
+
 
     // add catalog item for your personal store
     document.getElementById('add_catalog_item_button').addEventListener('click', function(event) {
@@ -260,36 +286,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById('store-view').style.display = 'none';
         document.getElementById('item-view').style.display = 'none';
 
-function processStoreJSON(pA){
-var arr = JSON.parse(pA);
-var sli = arr.slice(0,3)
-sli.forEach((i) => {
-    alert(i);
-        var store = coinAjax.getStoreData(i);
-        store.then((res) => {
-            var storeJSON = res.text();
-            storeJSON.then((text) => {
+//Create grab profile data for each peer ID in array
+        function processStoreJSON(pA) {
+            var arr = JSON.parse(pA);
+            var sli = arr.slice(0, 3)
+            sli.forEach((i) => {
+                alert(i);
+                coinAjax.getStoreData(i).then((res) => {
+                    res.text().then((text) => {
+                        alert(text);
+                        //listStore(store);
+                    }).catch((e) => {
+                        alert('somtin wong wit getStoreData()! You need to figga it out.')
+                    });
+                });
+            })
+
+        }
+
+//get an JSON array of peer IDs
+        coinAjax.getConnectedPeers().then((res) => {
+            res.text().then((text) => {
                 alert(text);
-                //listStore(store);
+                processStoreJSON(text);
             }).catch((e) => {
-                alert('somtin wong wit getStoreData()! You need to figga it out.')
+                alert('somting wong wit getConnectedPeers()!  ???' + e.toString());
             });
         });
-})
-
-}
-
-var peers = coinAjax.getConnectedPeers();
-peers.then((res) => {
-    var coordinates = res.text();
-    coordinates.then((text) => {
-alert(text);
-processStoreJSON(text);
-}).catch((e) => {
-    alert('somting wong wit getConnectedPeers()!  ???' + e.toString());
-});
-});
-});
+    });
 
     // Return to main menu from shop listings
     document.getElementById('return-from-browser').addEventListener('click', function(event) {
@@ -353,89 +377,116 @@ processStoreJSON(text);
     });
 
     document.getElementById('putGPS').addEventListener('click', function(event) {
-     var x;
-     var y;
-var peers = coinAjax.getConnectedPeers();
-peers.then((res) => {
-    var coordinates = res.text();
+        var x;
+        var y;
+        coinAjax.getConnectedPeers().then((res) => {
+            res.text().then((text) => {
+                alert(text);
+            }).catch((e) => {
+                alert('something wrong!  ???' + e.toString());
+            });
+        })
 
+        getLocation();
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                //x = "Geolocation is not supported by this browser.";
+            }
+        }
 
-    coordinates.then((text) => {
-alert(text);
-}).catch((e) => {
-    alert('somting wong!  ???' + e.toString());
-});
-})
-getLocation();
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else { 
-        //x = "Geolocation is not supported by this browser.";
-    }
-}
+        function showPosition(position) {
+            x = position.coords.latitude + "," + position.coords.longitude;
 
-function showPosition(position) {
-    x = position.coords.latitude + "," + position.coords.longitude;
+            var data = {
+                "handle": "",
+                "name": document.forms.profilefrm.name.value,
+                "location": document.forms.profilefrm.location.value,
+                "about": document.forms.profilefrm.about.value,
+                "shortDescription": document.forms.profilefrm.shortDesc.value,
+                "nsfw": false,
+                "vendor": false,
+                "moderator": false,
+                "GPS": x
+            }
+            coinAjax.putGPS(data).then((res) => {
+                res.text().then((text) => {
+                    var y = document.getElementById('demo');
+                    y.innerHTML = text;
+                }).catch((e) => {
+                    alert('somting wong!  ???' + e.toString());
+                });
+            });
+        };
 
-    var data = {
-    "peerID": "QmdKPnYfjENRTBFVPirRjbgA5F5dG72o88uyiqmDMwRoin",
-    "handle": "",
-    "name": "Mens Clothing Ba3r",
-    "location": "",
-    "about": "hey",
-    "shortDescription": "",
-    "nsfw": false,
-    "vendor": false,
-    "moderator": false,
-    "bitcoinPubkey": "02ee24d6ba3ae795aa4ee0a11939b329621b3f6244209f4df3c649b9cca48edd19",
-    "lastModified": "2018-10-31T05:03:44.051342800Z",
-    "currencies": [
-        "TBTC"
-    ],
-    "GPS": x
-}
-var putGPS = coinAjax.putGPS(data);
-putGPS.then((res) => {
-    var coordinates = res.text();
-
-
-    coordinates.then((text) => {
-var y = document.getElementById('demo');
-y.innerHTML= text;
-}).catch((e) => {
-    alert('somting wong!  ???' + e.toString());
-});
-})
-}
-
-function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-           // x = "User denied the request for Geolocation."
-           // alert(x);
-            break;
-        case error.POSITION_UNAVAILABLE:
-           // x = "Location information is unavailable."
-           // alert(x);
-            break;
-        case error.TIMEOUT:
-           // x = "The request to get user location timed out."
-           // alert(x);
-            break;
-        case error.UNKNOWN_ERROR:
-           // x = "An unknown error occurred."
-           // alert(x);
-            break;
-    }
-}
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    // x = "User denied the request for Geolocation."
+                    // alert(x);
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    // x = "Location information is unavailable."
+                    // alert(x);
+                    break;
+                case error.TIMEOUT:
+                    // x = "The request to get user location timed out."
+                    // alert(x);
+                    break;
+                case error.UNKNOWN_ERROR:
+                    // x = "An unknown error occurred."
+                    // alert(x);
+                    break;
+            }
+        }
 
 
 
 
     });
 
+    document.getElementById('save-profile').addEventListener('click', function(event) {
+        document.getElementById('section-1').style.display = 'none';
+        document.getElementById('section-2').style.display = 'none';
+        document.getElementById('section-3').style.display = 'block';
+        document.getElementById('coins-gps').style.display = 'none';
+        document.getElementById('store').style.display = 'none';
+        document.getElementById('add_item_block').style.display = 'none';
+        document.getElementById('store-list').style.display = 'none';
+        document.getElementById('store-view').style.display = 'none';
+        document.getElementById('item-view').style.display = 'none';
 
+var json = {
+ "name": document.forms.profilefrm.name.value,
+ "location": document.forms.profilefrm.location.value,
+ "about": document.forms.profilefrm.about.value,
+ "shortDesc": document.forms.profilefrm.shortDesc.value,
+ "nsfw": document.forms.profilefrm.nsfw.checked,
+ "vendor": document.forms.profilefrm.vendor.checked,
+ "moderator": document.forms.profilefrm.moderator.checked,
+ "website": document.forms.profilefrm.website.value,
+ "email": document.forms.profilefrm.email.value,
+ "phone": document.forms.profilefrm.phone.value,
+}
+
+coinAjax.putProfile(json).then((res) => {
+    res.text().then((text) => {
+        alert(text);
+        isJson(text);
+ document.forms.profilefrm.name.value = text.name,
+ document.forms.profilefrm.location.value = text.location,
+ document.forms.profilefrm.about.value = text.about,
+ document.forms.profilefrm.shortDesc.value = text.shortDescription,
+ document.forms.profilefrm.nsfw.checked = text.nsfw,
+ document.forms.profilefrm.vendor.checked = text.vendor,
+ document.forms.profilefrm.moderator.checked = text.moderator,
+ document.forms.profilefrm.website.value = text.website,
+ document.forms.profilefrm.email.value = text.email,
+ document.forms.profilefrm.phone.value = text.phone,
+    })
+})
+    });
 
 
 });
@@ -467,10 +518,7 @@ function listStore(profile) {
     button.appendChild(v);
 
     if (profile.avatarHashes != null) {
-     var ava = coinAjax.getImg(profile.avatarHashes.small)
-     ava.done(function(res) {
-
-
+        coinAjax.getImg(profile.avatarHashes.small).done(function(res) {
             var urlCreator = window.URL || window.webkitURL;
             var imageUrl = urlCreator.createObjectURL(res);
             imm.setAttribute("src", imageUrl);
@@ -481,7 +529,7 @@ function listStore(profile) {
         });
 
     }
-    button.addEventListener('click',function(){
+    button.addEventListener('click', function() {
         openStoreFunc(profile, button)
     });
 
@@ -489,12 +537,10 @@ function listStore(profile) {
 
 
 
-function openStoreFunc(profile,button) {
+function openStoreFunc(profile, button) {
 
-     var id = profile.name 
-     var pic;
-
-
+    var id = profile.name
+    var pic;
     document.getElementById('section-1').style.display = 'none';
     document.getElementById('section-2').style.display = 'none';
     document.getElementById('section-3').style.display = 'none';
@@ -504,7 +550,6 @@ function openStoreFunc(profile,button) {
     document.getElementById('store-list').style.display = 'none';
     document.getElementById('store-view').style.display = 'block';
     document.getElementById('item-view').style.display = 'none';
-    alert(id);
 
     var storeName = document.getElementById("store-name");
     storeName.appendChild(document.createTextNode(profile.name));
@@ -513,10 +558,8 @@ function openStoreFunc(profile,button) {
     storeName.appendChild(loc);
     var listings = coinAjax.getPeerListings(profile.peerID);
     alert(listings.length);
-    if(listings.length > 10) listings.slice(0,10);
+    if (listings.length > 10) listings.slice(0, 10);
     listings.forEach(function(i) {
-        alert("CATALOG ITEM :: " + i.title + " PRICE :" + i.price.amount + " " + i.price.currencyCode);
-
         var button = document.createElement("BUTTON");
         button.setAttribute("href", "#");
         button.setAttribute("id", i.slug);
@@ -536,25 +579,25 @@ function openStoreFunc(profile,button) {
         button.appendChild(u);
         button.appendChild(document.createElement("br"));
         button.appendChild(v);
-if(i.thumbnail != null){
-     var ava = coinAjax.getImg(i.thumbnail.small)
-     ava.done(function(res) {
-    var imm = document.createElement("IMG");
-            pic = res;
+        if (i.thumbnail != null) {
+            var ava = coinAjax.getImg(i.thumbnail.small)
+            ava.done(function(res) {
+                var imm = document.createElement("IMG");
+                pic = res;
 
-            var urlCreator = window.URL || window.webkitURL;
-            var imageUrl = urlCreator.createObjectURL(pic);
-            imm.setAttribute("src", imageUrl);
-            imm.setAttribute("width", "304");
-            imm.setAttribute("height", "228");
-            alert("IMG Url ::" + imageUrl);
-            button.appendChild(imm);
-});
- }
-     button.addEventListener('click',function(){
-        items(id);
+                var urlCreator = window.URL || window.webkitURL;
+                var imageUrl = urlCreator.createObjectURL(pic);
+                imm.setAttribute("src", imageUrl);
+                imm.setAttribute("width", "304");
+                imm.setAttribute("height", "228");
+                alert("IMG Url ::" + imageUrl);
+                button.appendChild(imm);
+            });
+        }
+        button.addEventListener('click', function() {
+            items(id);
+        });
     });
-});
 
 
 
@@ -564,6 +607,6 @@ if(i.thumbnail != null){
 
 
 function items(profile) {
-alert('buy');
+    alert('buy');
 
 }

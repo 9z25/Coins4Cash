@@ -1,5 +1,6 @@
 
 function initMap(){
+
   // Map options
   var options = {
     zoom:15,
