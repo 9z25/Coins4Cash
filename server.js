@@ -24,26 +24,16 @@ const options = {
     }
 };
 
+
+
 app.get('/ob/getStore/:_id', function(req, res) {
     let id = req.params._id
 
 
-    const options3 = {
-        hostname: `localhost`,
-        port: 4002,
-        auth: `Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==`,
-        path: `/ob/profile/` + 'QmPUNXvtdhdoSCvRBfo6PDks74Po9dAEJEd9xmkfRK4ZJZ',
-        method: `GET`,
-        headers: {
-            'Content-Type': `application/json`
-        }
-    };
-
+    options.path = `/ob/profile/` + 'QmPUNXvtdhdoSCvRBfo6PDks74Po9dAEJEd9xmkfRK4ZJZ';
+    options.method = `GET`;
     wok = new Promise(function(resolve, reject) {
-        var request = http.get(options3, (resp) => {
-            //reqPeers.setHeader('Content-Type','application/json');
-            //reqPeers.setHeard('Authorization','Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==')
-            //response.setEncoding('utf8');
+        var request = http.get(options, (resp) => {
             var data = '';
             resp.on('data', (chunk) => {
                 console.log("CHUCK + " + chunk);
@@ -93,24 +83,14 @@ app.get('/ob/getStore/:_id', function(req, res) {
     }
 });
 
-
-
+/*
+//get Profile
 app.get('/ob/profile/', function(req, res) {
-
-
-    const options2 = {
-        hostname: `localhost`,
-        port: 4002,
-        auth: `Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==`,
-        path: `/ob/profile/`,
-        method: `GET`,
-        headers: {
-            'Content-Type': `application/json`
-        }
-    };
+    options.path = `/ob/profile/`;
+    options.method = `GET`;
 
     wok = new Promise(function(resolve, reject) {
-        var request = http.get(options2, (resp) => {
+        var request = http.get(options, (resp) => {
             //reqPeers.setHeader('Content-Type','application/json');
             //reqPeers.setHeard('Authorization','Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==')
             //response.setEncoding('utf8');
@@ -155,23 +135,14 @@ app.get('/ob/profile/', function(req, res) {
 
     }
 });
-
+*/
 app.get('/ob/peers/', function(req, res) {
-    console.log('getCall, roger that');
 
-    const options1 = {
-        hostname: `localhost`,
-        port: 4002,
-        auth: `Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==`,
-        path: `/ob/peers/`,
-        method: `GET`,
-        headers: {
-            'Content-Type': `application/json`
-        }
-    };
+    options.path = `/ob/peers/`;
+    options.method = `GET`;
 
     wok = new Promise(function(resolve, reject) {
-        var request = http.get(options1, (resp) => {
+        var request = http.get(options, (resp) => {
             //reqPeers.setHeader('Content-Type','application/json');
             //reqPeers.setHeard('Authorization','Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==')
             //response.setEncoding('utf8');
@@ -226,16 +197,17 @@ app.get('/ob/peers/', function(req, res) {
     }
 });
 
-app.use('/ob/putProfile/', function(req, res, next) {
-	console.log('testing put profile');
-    console.log('REQUEST BODY :: ' + JSON.stringify(req.body));
-    //console.log(req.body);
+app.use('/ob/profile/', function(req, res, next) {
+	let body = "";
     options.path = "/ob/profile/";
-
-    let body = JSON.stringify(req.body);
-    let data = JSON.parse(body);
+    options.method = req.method.toString();
+    if(req.body){
+    body = JSON.stringify(req.body);
+}
     let json;
-
+console.log("begin: " + options.method)
+console.log(req.body);
+console.log(JSON.stringify(req.body));
 
     wok = new Promise(function(resolve, reject) {
         var request = http.request(options, (response) => {
@@ -243,11 +215,12 @@ app.use('/ob/putProfile/', function(req, res, next) {
             var str = '';
             response.on('data', function(chunk) {
                 str += chunk;
+                console.log("response.on :: " + str);
             });
 
             response.on('end', () => {
                 if (str) {
-                    console.log('get set :: ' + str);
+                	console.log("good");
                     resolve(str);
                 }
             });
@@ -257,31 +230,31 @@ app.use('/ob/putProfile/', function(req, res, next) {
 
         request.on('error', (e) => {
             if (e) {
+            	console.log("bad");
                 reject(e.message);
             }
         });
 
-        request.write(data);
+       // if(options.method === "PUT" || options.method === "POST"){
+        request.write(body);
         request.end();
+   // }
     });
 
     wok.then((str) => {
-        console.log('put Profile!! :: ' + str);
         json = JSON.parse(str);
-        sendPostResponse(str);
+        console.log("send response :" + str)
+        sendResponse(str);
 
     }).catch((e) => {
         console.log('Something went wrong, look here => ' + e);
     });
 
-    //res.write('you posted:\n' + json.GPS);
 
-    function sendPostResponse(json) {
+    function sendResponse(json) {
         var parse = JSON.parse(json);
-        //console.log("putProfile !! " + parse.GPS);
+        console.log("putProfile !! " + parse.GPS);
         res.setHeader('Content-Type', 'application/json');
-        //console.log(parse.GPS);
-        //console.log(res.status);
         res.send(json);
         res.end();
 
@@ -289,8 +262,8 @@ app.use('/ob/putProfile/', function(req, res, next) {
 });
 
 app.use('/ob/putGPS/', function(req, res, next) {
-    //console.log('REQUEST BODY :: ' + JSON.stringify(req.body));
-    //console.log(req.body);
+    console.log('REQUEST BODY :: ' + JSON.stringify(req.body));
+    console.log(req.body);
 
     let coord = JSON.stringify(req.body);
     let gps = JSON.parse(coord);

@@ -40,6 +40,20 @@ $.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
 });
 
 var coinAjax = {
+
+    profile: (opt, profile) => {
+        var str = JSON.stringify(profile);
+        return fetch('http://localhost:5000/ob/profile', {
+            async: false,
+            headers: {
+                "Content-type": "application/json",
+            },
+            method: opt,
+            mode: "cors",
+            body: str,
+            crossDomain: true,
+        });
+    },
     //get list of connected peers
     getConnectedPeers: () => {
         return fetch('http://localhost:5000/ob/peers', {
@@ -81,6 +95,19 @@ var coinAjax = {
             method: 'GET',
         });
     },
+        postImg: (formData) => {
+        return fetch('http://localhost:5000/ob/images/', {
+            async: false,
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "multipart/form-data"
+            },
+            method: "POST",
+            body: formData,
+            mode: "cors",
+            crossDomain: true,
+        });
+    },
 
     //get data on store thru ajax call **peer ID has required**
     getStoreData: (pID) => {
@@ -97,7 +124,8 @@ var coinAjax = {
     },
 
     putGPS: (gps) => {
-        return fetch('http://localhost:5000/ob/putGPS', {
+        alert(JSON.stringify(gps) + 'here');
+        return fetch('http://localhost:5000/ob/putGPS/', {
             async: false,
             headers: {
                 "Content-type": "application/json",
