@@ -2,11 +2,14 @@
    <head>
       <title>Coins4Cash</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <link rel="stylesheet" href="app.css" />
       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
       <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+      <script src="http://malsup.github.com/jquery.form.js"></script> 
+      <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+      <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <style>
          /* The Modal (background) */
@@ -162,6 +165,15 @@
                   <br />
                   <a href="#" class="btn btn-primary btn-lg" id="store-button">Store</a>
                   <a href="#" class="btn btn-primary brn-lg" id="profile-button">Profile</a>
+                  <a href="#" class="btn btn-primary brn-lg" id="wallet-button">Wallet</a>
+                  <br />
+                  <br />
+                  <a href="#" class="btn btn-primary brn-lg" id="purchases-button">Purchases</a>
+                  <a href="#" class="btn btn-primary brn-lg" id="cases-button">Cases</a>
+                  <br />
+                  <br />
+                  <a href="#" class="btn btn-primary brn-lg" id="followers-button">Followers</a>
+                  <a href="#" class="btn btn-primary brn-lg" id="following-button">Following</a>
                </div>
             </div>
             <!-- Modal -->
@@ -220,51 +232,38 @@
                <p class="lead">
                </p>
             </div>
-            <script>// Get the modal
-               var modal1 = document.getElementById('profileModal');
-               
-               // Get the button that opens the modal
-               var btn = document.getElementById("profile-button");
-               
-               // Get the <span> element that closes the modal
-               var span = document.getElementsByClassName("close")[0];
-               
-               // When the user clicks on the button, open the modal 
-               btn.onclick = function() {
-                   modal1.style.display = "block";
-                   coinAjax.profile('GET').then((res) =>{
-                       res.text().then((text) => {
-                           var profile = JSON.parse(text);
-               
-                document.forms.profilefrm.name.value = profile.name;
-                document.forms.profilefrm.location.value = profile.location;
-                document.forms.profilefrm.about.value = profile.about;
-                document.forms.profilefrm.shortDesc.value = profile.shortDescription;
-                document.forms.profilefrm.nsfw.checked = profile.nsfw;
-                document.forms.profilefrm.vendor.checked = profile.vendor;
-                document.forms.profilefrm.moderator.checked = profile.moderator;
-                if(!profile.contactInfo.website) document.forms.profilefrm.website.value = '';
-                else document.forms.profilefrm.website.value = profile.contactInfo.website;
-                if(!profile.contactInfo.email) document.forms.profilefrm.contactInfo.email.value = '';
-                else document.forms.profilefrm.email.value = profile.contactInfo.email;
-                if(!profile.contactInfo.phoneNumber) document.forms.profilefrm.phone.value = '';
-                else document.forms.profilefrm.phone.value = profile.contactInfo.phoneNumber;
-                       })
-                   })
-               }
-               
-               // When the user clicks on <span> (x), close the modal
-               span.onclick = function() {
-                   modal1.style.display = "none";
-               }
-               
-               // When the user clicks anywhere outside of the modal, close it
-               window.onclick = function(event) {
-                   if (event.target == modal) {
-                       modal1.style.display = "none";
-                   }
-               }
-            </script>
+            <script>// Get the modal</script>
+            <!-- Modal -->
+            <div class="modal fade" id="walletModal" role="dialog">
+               <div class="modal-dialog">
+                  <!-- Modal content -->
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Wallet</h2>
+                     </div>
+                     <p>
+                     <div id="amount"></div>
+                     </p>
+                     <div class="modal-body">
+                        <div class="container">
+                           <div id="wallet-data"></div>
+                           <br>
+                           <br>
+                           <a href="#" class="btn btn-primary brn-lg" id="wallet-receive">Recieve</a>
+                           <a href="#" class="btn btn-primary brn-lg" id="wallet-send">Send</a>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <br />
+               <br />
+               <p class="lead">
+               </p>
+            </div>
+            <script>// Get the modal</script>
             <!-- Trade coins section -->
             <div class="panel-landing" id="coins-gps">
                <h1>Welcome</h1>
@@ -280,12 +279,12 @@
                <script></script>
                <h2 id="bitcoin-amount">0.0 BTC</h2>
                <div id="image_block"><img src="http://lh5.ggpht.com/lRsLAX4wPXD-DiuSMhkioT-376erWGj2fIxJ-RU1oXUQL4JyZ3Ky6iKiqJ5bPT7KNQ=w300" style="max-height: 120px; max-width: 160px;" id="user-character" /></div>
+               <div id="coin-catalog"></div>
             </div>
-
-            <!-- Modal -->
-                        <div class="modal fade" id="coinModal" role="dialog">
+            <!-- Coin Modal -->
+            <div class="modal fade" id="coinModal" role="dialog">
                <div class="modal-dialog">
-                  <!-- Modal content -->
+                  <!-- Coin Modal content -->
                   <div class="modal-content">
                      <div class="modal-header">
                         <span class="close">&times;</span>
@@ -295,22 +294,25 @@
                      <div class="modal-body">
                         <div class="container">
                            <form name="coinTradefrm" method="POST">
-                            Price Modifier (+/-):<input type="text" name="crypto_price">%
-                            <br>
-                            Trade: <select>
-                            <option value="usd">USD</option>
-                            <option value="btc">BTC</option>
-                            <option value="bch">BCH</option>
-                            <option value="eth">ETH</option>
-                            </select>
-                            <br>
-                            Meet where?<input type=text name="crypto_meet">
-                            <br>
-                            Description:
-                            <br>
-                            <textarea name="message" rows="10" cols="30"></textarea>
-                            <br>
-                            Inventory: <input type="text" name="crypto_amount">
+                              Price Modifier (+/-):<input type="text" name="crypto_price">%
+                              <br>
+                              What are you trading with?: 
+                              <select name="trade">
+                                 <option value="usd">USD</option>
+                                 <option value="btc">BTC</option>
+                                 <option value="bch">BCH</option>
+                                 <option value="eth">ETH</option>
+                              </select>
+                              <br>
+                              Photo: <input type="file" name="sc_pic" id="coin_pic" accept="image/png, image/jpeg">
+                              <br>
+                              Meet where?<input type=text name="crypto_meet">
+                              <br>
+                              Description:
+                              <br>
+                              <textarea name="message" rows="10" cols="30"></textarea>
+                              <br>
+                              Inventory: <input type="text" name="crypto_amount">
                            </form>
                            <p class="lead">
                            <p><a href="#" class="btn btn-primary btn-sm" id="create-crypto-listing">Create Listing</a></p>
@@ -325,33 +327,7 @@
                <p class="lead">
                </p>
             </div>
-                        <script>// Get the modal
-               var modal = document.getElementById('coinModal');
-               
-               // Get the button that opens the modal
-               var btn = document.getElementById("post");
-               
-               // Get the <span> element that closes the modal
-               var span = document.getElementsByClassName("close")[1];
-               
-               // When the user clicks on the button, open the modal 
-               btn.onclick = function() {
-                   modal.style.display = "block";
-               }
-               
-               // When the user clicks on <span> (x), close the modal
-               span.onclick = function() {
-                   modal.style.display = "none";
-               }
-               
-               // When the user clicks anywhere outside of the modal, close it
-               window.onclick = function(event) {
-                   if (event.target == modal) {
-                       modal.style.display = "none";
-                   }
-               }
-            </script>
-
+            <script>// Get the modal</script>
             <!-- Store listing section -->
             <div class="panel-landing" id="store-list">
                <div class="container">
@@ -368,8 +344,10 @@
             <!-- Store view -->
             <div class="panel-landing" id="store-view">
                <div class="container">
-                <h1 id="store-name"></h1>
-                  <br> <div id="loc">1.2 mi away, Mission Bay</div>
+                  <h1 id="store-name"></h1>
+                  <br> 
+                  <div id="loc">1.2 mi away, Mission Bay</div>
+                  <input type="checkbox" data-toggle="toggle" data-on="Unfollow" data-off="Follow" id="follow-profile">
                   <div data-role="content" id="item-list">
                   </div>
                   <p>
@@ -377,7 +355,7 @@
                   </p>
                </div>
             </div>
-            <!-- Item view -->
+            <!-- Peer Store Listings view -->
             <div class="panel-landing" id="item-view">
                <div class="container">
                   <h1 class="landing-heading">{{ Name of Item }}</h1>
@@ -408,15 +386,73 @@
                   <img src="http://bestanimations.com/Money/Coins/gold-coins-animated-gif.gif" class="img-rounded avatar" id="avatar-image">
                </div>
                <h1 class="landing-heading">Your Store</h1>
+               <input type="checkbox" data-toggle="toggle" data-on="OPEN" data-off="CLOSED" id="openStore">
                <p class="lead">
-                  <a href="#" class="btn btn-primary btn-lg" id="putGPS">Post Location</a>
+                  <input type="checkbox" data-toggle="toggle" data-on="GPS ON" data-off="GPS OFF" id="putGPS">
                <p id="demo"></p>
                <div data-role="content">
                </div>
-               <a href="#" class="btn btn-primary btn-lg" id="add_catalog_item_button">Add Item</a>
+               <a href="#" class="btn btn-primary brn-lg" id="moderators-button">Moderators</a>
+               <p>
+                  <a href="#" class="btn btn-primary btn-lg" id="add_catalog_item_button">Add Item</a>
+               </p>
+               <a href="#" class="btn btn-primary brn-lg" id="orders-button">Sales</a>
                <p>
                   <a href="#" class="btn btn-primary btn-lg" id="return-from-storemenu">Menu</a>
                </p>
+               <div id="service-catalog"></div>
+            </div>
+            <!-- Moderator Modal -->
+            <div class="modal fade" id="moderatorModal" role="dialog">
+               <div class="modal-dialog">
+                  <!-- Modal content -->
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Moderators</h2>
+                     </div>
+                     <p>
+                     </p>
+                     <div class="modal-body">
+                        <table width="485" border="1" cellspacing=0 cellpadding=5 id="mod-table">
+                           <tr>
+                              <th>Available</th>
+                              <th>Selected</th>
+                           </tr>
+                           <tr bgcolor="#7442f4">
+                           </tr>
+                        </table>
+                        * The moderator service charge only applies when an order is disputed.
+                        <div class="container">
+                           <br>
+                           <br>
+                           <a href="#" class="btn btn-primary brn-lg" id="find-moderator">Find User</a>
+                           <input type="text" />
+                           <br>
+                           <br>
+                           <a href="#" class="btn btn-primary brn-lg" id="save-moderator">Save List</a>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <br />
+               <br />
+               <p class="lead">
+               </p>
+            </div>
+            <script></script>
+            <!-- sales section -->
+            <div class="panel-landing" id="sales-view">
+               <div class="container">
+                  <h1>Sales</h1>
+                  <div id="sales-content"></div>
+                  <p>
+                     <a href="#" class="btn btn-primary btn-lg" id="return-to-store">Back to store</a>
+                     <a href="#" class="btn btn-primary btn-lg" id="return-to-menu">Menu</a>
+                  </p>
+               </div>
             </div>
             <!-- add catalog item section -->
             <div class="panel-landing" id="add_item_block">
@@ -425,56 +461,60 @@
                </div>
                <h1 class="landing-heading">Store</h1>
                <div class="container">
-                  <form>
+                  <form id="add_item" >
                      <fieldset>
                         <label class="good">
                         Name:</label>
                         <input type="text" class="good" name="sc_name_input">
                         Type:
                         <select id="sc_type">
-                            <option value="physical_good">Physical Good</option>
-                            <option value="digital_good">Digital Good</option>
-                            <option value="service">Service</option>
-                            <option value="cryptocurrency">Cryptocurrency</option>
-                        </select><label class="crypto">
+                           <option value="physical_good">Physical Good</option>
+                           <option value="digital_good">Digital Good</option>
+                           <option value="service">Service</option>
+                           <option value="cryptocurrency">Cryptocurrency</option>
+                        </select>
+                        <label class="crypto">
                         Trade:</label>
                         <select class="crypto">
-                            <option value="usd">USD</option>
-                            <option value="btc">BTC</option>
-                            <option value="bch">BCH</option>
-                            <option value="eth">ETH</option>
-                        </select><label class="crypto">
+                           <option value="usd">USD</option>
+                           <option value="btc">BTC</option>
+                           <option value="bch">BCH</option>
+                           <option value="eth">ETH</option>
+                        </select>
+                        <label class="crypto">
                         Inventory:</label>
                         <input type="text" name="sc_amount" class="crypto">
-                        Photo: <input type="file" name="sc_pic" accept="image/png, image/jpeg">
+                        Photo: <input type="file" name="sc_pic" id="sc_pic" accept="image/png, image/jpeg">
                         <img id="sc_image" src="#" alt="Listing Photo"/>
                         <p id="image-name"></p>
                         <p>
-                        <label class="good">Price:
-                        </label>
-                        <input type="text" class="good" name="sc_price">
-                        <select class="good">
-                            <option value="text" name="usd" name="sc_usd">USD</option>
-                        </select>
-                        <label class="crypto">
-                        Price Modifier (+/-):</label><input type="text" class="crypto" name="sc_price"><label class="good">%</label>
+                           <label class="good">Price:
+                           </label>
+                           <input type="text" class="good" name="sc_price">
+                           <select class="good">
+                              <option value="text" name="usd" name="sc_usd">USD</option>
+                           </select>
+                           <label class="crypto">
+                           Price Modifier (+/-):</label><input type="text" class="crypto" name="sc_price"><label class="good">%</label>
                         </p>
                         <label class="physical_good">
                         Condition:
                         </label>
                         <select class="physical_good">
-                            <option value="new">New</option>
-                            <option value="used_excellent">Used - Excellent</option>
-                            <option value="used_good">Used - Good</option>
-                            <option value="used_poor">Used - Poor</option>
-                            <option value="refurbished">Refurbished</option>
-                        </select><label class="good">
+                           <option value="new">New</option>
+                           <option value="used_excellent">Used - Excellent</option>
+                           <option value="used_good">Used - Good</option>
+                           <option value="used_poor">Used - Poor</option>
+                           <option value="refurbished">Refurbished</option>
+                        </select>
+                        <label class="good">
                         NSFW:</label> <input type="checkbox" class="good" name="sc_isNSFW">
                         <label class="good">
                         SKU:</label> <input type="text" class="good" name="sc_sku">
                         <p class="justify">Description:
                            <input type="text" name="sc_desc">
-                        </p><label class="digital_good">
+                        </p>
+                        <label class="digital_good">
                         Select a file:</label> <input type="file" class="digital_good" name="sc_file" accept="image/png, image/jpeg" >
                         <a href="#" id="create-sc-item" style type="submit" class="btn btn-primary">Create Item</a>
                         <a href="#" id="cancel-sc-item" style type="submit" class="btn btn-primary">Cancel</a>
@@ -482,14 +522,29 @@
                   </form>
                </div>
             </div>
+            <!-- Purchase screen -->
+            <div class="panel-landing" id="purchase-view">
+               <div class="container">
+                  <h1 class="landing-heading">Purchases</h1>
+                  <div data-role="content" id="purchase-history">
+                  </div>
+                  <p>
+                     <a href="#" class="btn btn-primary btn-lg" id="return-from-purchases">Menu</a>
+                  </p>
+               </div>
+            </div>
             <!-- Site wrapper -->
          </div>
       </div>
       </div>
       <script async defer src="https://maps.googleapis.com/maps/api/js?v=3.20key=AIzaSyBuJ9Ay8bMhjKglQTeKS8S-4wEhme6KKVc&callback=initMap"></script>
-      <script src="c4c.js"></script>
-      <script src="coins-gps.js"></script>
-      <script src="coinAjax.js"></script>
+      <script src="api\c4c.js"></script>
+      <script src="api\coins-gps.js"></script>
+      <script src="api\coinAjax.js"></script>
+      <script src="client\modals.js"></script>
+      <script src="client\toggles.js"></script>
+      <script src="client\processors.js"></script>
+      <script src="client\client.js"></script>
       <script src="app.js"></script>
    </body>
 </html>
