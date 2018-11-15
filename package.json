@@ -27,7 +27,6 @@
     "blockstack": "^0.15.0",
     "body-parser": "^1.18.3",
     "buffer": "^5.2.1",
-    "fetch": "^1.1.0",
     "install": "^0.12.2"
   }
 }
