@@ -25,7 +25,6 @@ module.exports.getPeers = () => {
 }
 
 module.exports.fetchProfiles = (arr) => {
-
     url = "http://localhost:4002/ob/fetchprofiles?async="
     return axios(url, {
         responseType: "json",
@@ -35,19 +34,6 @@ module.exports.fetchProfiles = (arr) => {
         method: "POST",
         mode: "cors",
         data: arr,
-        crossDomain: true
-    });
-}
-
-module.exports.getBalance = () => {
-    url = "http://localhost:4002/wallet/balance"
-    return axios(url, {
-        responseType: "json",
-        headers: {
-            Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
-        },
-        method: "GET",
-        mode: "cors",
         crossDomain: true
     });
 }

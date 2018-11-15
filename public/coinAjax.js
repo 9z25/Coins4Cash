@@ -48,6 +48,7 @@ var coinAjax = {
             type: "GET",
             url: "http://localhost:5000/ob/peers/",
             headers: {
+                "Content-Type": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
             },
@@ -70,8 +71,8 @@ var coinAjax = {
             async: true,
             type: opt,
             url: path,
-            contentType: "application/json",
             headers: {
+                "Content-Type": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
             },
@@ -105,6 +106,7 @@ var coinAjax = {
                 async: true,
                 url: path,
                 headers: {
+                    "Content-Type": "application/json",
                     "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
                 },
                 contentType: false,
@@ -123,8 +125,8 @@ var coinAjax = {
         return $.ajax({
             async: true,
             url: path,
-            contentType: "application/json",
             header: {
+                "Content-Type": "application/json",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
             },
             method: verb,
@@ -141,6 +143,7 @@ var coinAjax = {
             async: true,
             url: path,
             header: {
+                "Content-Type": "application/json",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
             },
             method: "GET",
@@ -156,8 +159,8 @@ var coinAjax = {
         return $.ajax({
             async: true,
             url: path,
-            contentType: "application/json",
             header: {
+                "Content-Type": "application/json",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
             },
             method: verb,
@@ -195,8 +198,8 @@ var coinAjax = {
         return $.ajax({
             async: true,
             url: path,
-            contentType: "application/json",
             header: {
+                "Content-Type": "application/json",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
             },
             method: verb,
@@ -208,7 +211,8 @@ var coinAjax = {
         });
     },
     order: (verb, orderId, json, cmd) => {
-        path = "http://localhost:5000/ob/order/" + orderId;
+        alert("order");
+path = "http://localhost:5000/ob/order/" + orderId;
 
 
         return $.ajax({
@@ -231,7 +235,6 @@ var coinAjax = {
         return $.ajax({
             async: true,
             url: path,
-            contentType: "application/json",
             header: {
                 "Content-Type": "application/json",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
@@ -244,10 +247,9 @@ var coinAjax = {
             }
         });
     },
-    wallet: (proc, json, txid) => {
-
+    wallet: (proc,json,txid) => {
         var verb;
-        if (proc === "ADDR") {
+         if (proc === "ADDR") {
             path = "http://localhost:5000/wallet/addr/";
             verb = "GET";
         } else if (proc === "BALANCE") {
@@ -257,54 +259,45 @@ var coinAjax = {
             path = "http://localhost:5000/wallet/seed/";
             verb = "GET";
         } else if (proc === "SPEND") {
-            if (!json) {
+            if(!json) {
                 return;
             } else {
-                path = "http://localhost:5000/wallet/spend";
-                verb = "POST";
-            }
+            path = "http://localhost:5000/wallet/spend/";
+            verb = "POST";
+        }
         } else if (proc === "ESTIMATE") {
-            path = "http://localhost:5000/wallet/estimatefees";
+            path = "http://localhost:5000/wallet/estimatefees/";
             verb = "GET";
         } else if (proc === "BUMP") {
-            if (txid) {
-                path = "http://localhost:5000/wallet/bumpfees" + txid;
-                verb = "POST";
-            } else {
-                return;
-            }
+            if(txid) path = "http://localhost:5000/wallet/bumpfees/" + txid;
+            verb = "POST";
+            else return;
         } else if (proc === "HISTORY") {
             path = "http://localhost:5000/wallet/history/";
             verb = "GET";
         } else if (proc === "STATUS") {
             path = "http://localhost:5000/wallet/status/";
             verb = "GET";
-        } else if (proc === "RESYNC") {
+        }  else if (proc === "RESYNC") {
             path = "http://localhost:5000/wallet/resync/";
             verb = "POST";
         } else {
             return;
         }
-        if (verb && path) {
-            alert("1: " + verb);
-            alert("2: " + path);
-            alert("3 : " + json);
+        if((verb) && (path)){
             return $.ajax({
             async: true,
             url: path,
-            dataType:"json",
-            contentType: "application/json",
             header: {
+                "Content-Type": "application/json",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
             },
             method: verb,
-            data: JSON.stringify(json),
             success: (data) => {},
             error: (err) => {
                 alert("error getting wallet data");
             }
         });
         }
-    },
-
+    }
 }

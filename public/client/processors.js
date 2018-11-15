@@ -1,69 +1,130 @@
-//save profile data from profileModal
-function saveProfile() {
-    var json = {
-        "name": document.forms.profilefrm.name.value,
-        "location": document.forms.profilefrm.location.value,
-        "about": document.forms.profilefrm.about.value,
-        "shortDescription": document.forms.profilefrm.shortDesc.value,
-        "nsfw": document.forms.profilefrm.nsfw.checked,
-        "vendor": document.forms.profilefrm.vendor.checked,
-        "moderator": document.forms.profilefrm.moderator.checked,
-        "contactInfo": {
-            "website": document.forms.profilefrm.website.value,
-            "email": document.forms.profilefrm.email.value,
-            "phoneNumber": document.forms.profilefrm.phone.value,
-        },
-    }
-    var data = JSON.stringify(json);
-    coinAjax.profile("PUT", json).then((res) => {
-        var profile = JSON.parse(res);
-        document.forms.profilefrm.name.value = profile.name;
-        document.forms.profilefrm.location.value = profile.location;
-        document.forms.profilefrm.about.value = profile.about;
-        document.forms.profilefrm.shortDesc.value = profile.shortDescription;
-        document.forms.profilefrm.nsfw.checked = profile.nsfw;
-        document.forms.profilefrm.vendor.checked = profile.vendor;
-        document.forms.profilefrm.moderator.checked = profile.moderator;
-        if (profile.contactInfo == null) {
-            document.forms.profilefrm.website.value = "";
-            document.forms.profilefrm.email.value = "";
-            document.forms.profilefrm.phone.value = "";
-        } else {
-            document.forms.profilefrm.website.value = profile.contactInfo.website;
-            document.forms.profilefrm.email.value = profile.contactInfo.email;
-            document.forms.profilefrm.phone.value = profile.contactInfo.phoneNumber;
-        }
+function spend(addr,amt,feeLevel) {
 
-    });
+var spendJson = {
+    "wallet": "TBTC",
+    "address": "",
+    "amount": "",
+    "feeLevel": "",
+    "memo": "",
 }
-
-//getPersonal Listings for Map
-function getPersonalListingsOnMap() {
-    coinAjax.listing("GET").then((res) => {
-        var text = document.createTextNode(JSON.stringify(res));
-        $("#coin-catalog").append(text);
+spendJson.address = addr;
+spendJson.amount = 10000;
+spendJson.feeLevel = "NORMAL";
+spendJson.memo = "This is some test bitcoin!";
+var data = JSON.stringify(spendJson);
+var json = JSON.parse(data);
+    coinAjax.wallet("SPEND", spendJson).then((res) => {
+alert(res);
     })
 }
 
-//Create grab store data for each peer ID in array
-function processStoreJSON(pA) {
-    var str = JSON.stringify(pA);
-    var arr = JSON.parse(str);
-    var sli = arr.slice(0, 3);
-    coinAjax.profile("POST", sli).then((res) => {
-        var str = JSON.stringify(res);
 
-        var arr = JSON.parse(str);
-
-        for (var i = 0; i < arr.length; i++) {
-            payLoad = arr[i].profile;
-
-            var store = JSON.stringify(payLoad);
-            listStore(store);
+//getPersonal Listings for Map
+function getPersonalListingsOnMap() {
+    coinAjax.listing("GET").then((response) => {
+        var res = JSON.stringify(response);
+        if (res.charAt(0) == "<") {
+            return;
         }
-    }).catch((e) => {
-        alert("app.js, 384, " + JSON.stringify(e));
+        var listings = JSON.parse(res);
+        if (listings.length > 10) listings.slice(0, 10);
+        listings.forEach(function(i) {
+            var button = document.createElement("BUTTON");
+            button.setAttribute("href", "#");
+            button.setAttribute("id", i.slug);
+            button.setAttribute("class", "w3-button w3-black");
+
+            var h = document.createElement("p");
+            var t = document.createTextNode(i.title);
+            var u = document.createTextNode(i.price.amount + i.price.currencyCode);
+            var v = document.createTextNode(i.description);
+            var v1 = document.createTextNode(i.shipsTo.toString());
+            document.getElementById("coin-catalog").appendChild(h);
+
+
+            h.appendChild(button);
+            button.appendChild(t);
+            button.appendChild(document.createElement("br"));
+            button.appendChild(u);
+            button.appendChild(document.createElement("br"));
+            button.appendChild(v);
+            if (i.thumbnail != null) {
+                coinAjax.img("GET", i.thumbnail.small).then(function(res) {
+                    var imm = document.createElement("IMG");
+                    pic = res;
+
+                    var urlCreator = window.URL || window.webkitURL;
+                    var imageUrl = urlCreator.createObjectURL(pic);
+                    imm.setAttribute("src", imageUrl);
+                    imm.setAttribute("width", "304");
+                    imm.setAttribute("height", "228");
+
+                    button.appendChild(imm);
+                });
+            }
+            button.addEventListener("click", function() {
+                items(id);
+            });
+
+        })
+    }).catch((err) => {
+        alert(JSON.stringify(err));
     });
+}
+//add listing
+function addListing(i) {
+
+}
+
+//show catalog items on personal store screen
+function myStore() {
+    coinAjax.listing("GET").then((res) => {
+        var checkRes = JSON.stringify(res);
+        if (checkRes.charAt(0) == "<") {
+            return;
+        }
+        var listings = JSON.parse(checkRes);
+        if (listings.length > 10) listings.slice(0, 10);
+        listings.forEach(function(i) {
+            var button = document.createElement("BUTTON");
+            button.setAttribute("href", "#");
+            button.setAttribute("id", i.slug);
+            button.setAttribute("class", "w3-button w3-black");
+
+            var h = document.createElement("p");
+            var t = document.createTextNode(i.title);
+            var u = document.createTextNode(i.price.amount + i.price.currencyCode);
+            var v = document.createTextNode(i.description);
+            var v1 = document.createTextNode(i.shipsTo.toString());
+            document.getElementById("service-catalog").appendChild(h);
+
+
+            h.appendChild(button);
+            button.appendChild(t);
+            button.appendChild(document.createElement("br"));
+            button.appendChild(u);
+            button.appendChild(document.createElement("br"));
+            button.appendChild(v);
+            if (i.thumbnail != null) {
+                coinAjax.img("GET", i.thumbnail.small).then(function(res) {
+                    var imm = document.createElement("IMG");
+                    pic = res;
+
+                    var urlCreator = window.URL || window.webkitURL;
+                    var imageUrl = urlCreator.createObjectURL(pic);
+                    imm.setAttribute("src", imageUrl);
+                    imm.setAttribute("width", "304");
+                    imm.setAttribute("height", "228");
+                    button.appendChild(imm);
+                });
+            }
+            button.addEventListener("click", function() {
+                items(id);
+            });
+
+        })
+
+    })
 }
 
 
@@ -84,16 +145,23 @@ function getPurchaseHistory() {
             var t = document.createTextNode(purchase.vendorHandle);
             var u = document.createTextNode(purchase.paymentCoin);
             var v = document.createTextNode(purchase.shippingAddress);
+            var x = document.createTextNode(purchase.timestamp);
+            var y = document.createTextNode(purchase.status);
+
             document.getElementById("purchase-history").appendChild(h);
 
             h.appendChild(button);
             button.appendChild(t);
             var br = document.createElement("br");
-            //button.appendChild(h);
             button.appendChild(u);
-            var h1 = document.createElement("br")
-            button.appendChild(h1);
+            var br1 = document.createElement("br")
+            button.appendChild(br);
             button.appendChild(v);
+            button.appendChild(br1);
+            button.appendChild(x);
+            var br2 = document.createElement("br");
+            button.appendChild(br2);
+            button.appendChild(y);
 
             if (purchase.thumbnail !== undefined) {
                 coinAjax.img("GET", purchase.thumbnail).then((res) => {
@@ -106,15 +174,16 @@ function getPurchaseHistory() {
                 }).catch((err) => {
                     alert('592, ' + err);
                 })
-
             }
             button.addEventListener("click", function() {
-                var orderId = this.getAttribute("id");
+                var orderId = button.getAttribute("id");
+                alert(orderId)
                 coinAjax.order("GET", orderId).then((res) => {
-                    var order = JSON.stringify(res);
-                    openOrderFunc(order);
+                    var str = res;
+                    openOrderFunc(str);
                 })
             });
+
         })
     });
 }
@@ -162,17 +231,33 @@ function listSales(obj) {
         var orderId = this.getAttribute("id");
         coinAjax.order("GET", orderId).then((res) => {
             var order = JSON.stringify(res);
-            openOrderFunc(order);
+            alert(order)
+            processor.openOrderFunc(order);
         })
     });
 
 }
 
-//add listing
-function addListing(i) {
+//Create grab store data for each peer ID in array
+function processStoreJSON(pA) {
+    var str = JSON.stringify(pA);
+    var arr = JSON.parse(str);
+    var sli = arr.slice(0, 3);
+    coinAjax.profile("POST", sli).then((res) => {
+        var str = JSON.stringify(res);
 
+        var arr = JSON.parse(str);
+
+        for (var i = 0; i < arr.length; i++) {
+            payLoad = arr[i].profile;
+
+            var store = JSON.stringify(payLoad);
+            listStore(store);
+        }
+    }).catch((e) => {
+        alert("app.js, 384, " + JSON.stringify(e));
+    });
 }
-
 
 //render list of connected external stores for stores screen
 function listStore(str) {

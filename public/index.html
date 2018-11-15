@@ -1,6 +1,7 @@
 <html>
    <head>
       <title>Coins4Cash</title>
+      <script src="client\modals.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -164,16 +165,16 @@
                   <br />
                   <br />
                   <a href="#" class="btn btn-primary btn-lg" id="store-button">Store</a>
-                  <a href="#" class="btn btn-primary brn-lg" id="profile-button">Profile</a>
-                  <a href="#" class="btn btn-primary brn-lg" id="wallet-button">Wallet</a>
+                  <a href="#" class="btn btn-primary btn-lg" id="profile-button">Profile</a>
+                  <a href="#" class="btn btn-primary btn-lg" id="wallet-button">Wallet</a>
                   <br />
                   <br />
-                  <a href="#" class="btn btn-primary brn-lg" id="purchases-button">Purchases</a>
-                  <a href="#" class="btn btn-primary brn-lg" id="cases-button">Cases</a>
+                  <a href="#" class="btn btn-primary btn-lg" id="purchases-button">Purchases</a>
+                  <a href="#" class="btn btn-primary btn-lg" id="cases-button">Cases</a>
                   <br />
                   <br />
-                  <a href="#" class="btn btn-primary brn-lg" id="followers-button">Followers</a>
-                  <a href="#" class="btn btn-primary brn-lg" id="following-button">Following</a>
+                  <a href="#" class="btn btn-primary btn-lg" id="followers-button">Followers</a>
+                  <a href="#" class="btn btn-primary btn-lg" id="following-button">Following</a>
                </div>
             </div>
             <!-- Modal -->
@@ -233,10 +234,10 @@
                </p>
             </div>
             <script>// Get the modal</script>
-            <!-- Modal -->
+            <!--wallet Modal -->
             <div class="modal fade" id="walletModal" role="dialog">
                <div class="modal-dialog">
-                  <!-- Modal content -->
+                  <!-- walletModal content -->
                   <div class="modal-content">
                      <div class="modal-header">
                         <span class="close">&times;</span>
@@ -250,8 +251,13 @@
                            <div id="wallet-data"></div>
                            <br>
                            <br>
-                           <a href="#" class="btn btn-primary brn-lg" id="wallet-receive">Recieve</a>
-                           <a href="#" class="btn btn-primary brn-lg" id="wallet-send">Send</a>
+                           <form name="walletFrm" id="walletFrm" method="POST">
+                           Recepient Address: <input type="text" name="recepientAddr">
+                            </form>
+                           <br>
+                           <br>
+                           <a href="#" class="btn btn-primary btn-lg" id="wallet-receive">Recieve</a>
+                           <a href="#" class="btn btn-primary btn-lg" id="wallet-send">Send</a>
                         </div>
                         <div class="modal-footer">
                         </div>
@@ -266,7 +272,7 @@
             <script>// Get the modal</script>
             <!-- Trade coins section -->
             <div class="panel-landing" id="coins-gps">
-               <h1>Welcome</h1>
+               <h1>C4C Map</h1>
                <div id="container">
                   <h2>
                      <div id="map" style="width:100%; height:500px;"></div>
@@ -334,6 +340,11 @@
                   <h1 class="landing-heading">Store listings</h1>
                   <a href="#" class="btn btn-primary btn-lg" id="virtual">Virtual</a>
                   <a href="#" class="btn-sm" id="neighborhood">Neighborhood</a>
+                  <br>
+                  <form name="search">
+                  Search for Peer: <input type="text" id="search">
+                  <button type="submit" value="Submit">Search</button>
+                  </form>
                   <div data-role="content" id="return-profile-batch">
                   </div>
                   <p>
@@ -380,6 +391,36 @@
                   </p>
                </div>
             </div>
+                                    <!--purchaseModal -->
+            <div class="modal fade" id="purchaseModal" role="dialog">
+               <div class="modal-dialog">
+                  <!-- purchaseModal content -->
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Wallet</h2>
+                     </div>
+                     <p>
+                     <div id="item-content"></div>
+                     </p>
+                     <div class="modal-body">
+                        <div class="container">
+                           <div id="wallet-data"></div>
+                           <br>
+                           <br>
+                           <a href="#" class="btn btn-primary btn-lg" id="make-purchase">Purchase</a>
+                           <a href="#" class="btn btn-primary btn-lg" id="cancel-purchase">Cancel</a>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <br />
+               <br />
+               <p class="lead">
+               </p>
+            </div>
             <!-- Personal store section -->
             <div class="panel-landing" id="store">
                <div class="avatar-section">
@@ -392,11 +433,11 @@
                <p id="demo"></p>
                <div data-role="content">
                </div>
-               <a href="#" class="btn btn-primary brn-lg" id="moderators-button">Moderators</a>
+               <a href="#" class="btn btn-primary btn-lg" id="moderators-button">Moderators</a>
                <p>
                   <a href="#" class="btn btn-primary btn-lg" id="add_catalog_item_button">Add Item</a>
                </p>
-               <a href="#" class="btn btn-primary brn-lg" id="orders-button">Sales</a>
+               <a href="#" class="btn btn-primary btn-lg" id="orders-button">Sales</a>
                <p>
                   <a href="#" class="btn btn-primary btn-lg" id="return-from-storemenu">Menu</a>
                </p>
@@ -426,11 +467,11 @@
                         <div class="container">
                            <br>
                            <br>
-                           <a href="#" class="btn btn-primary brn-lg" id="find-moderator">Find User</a>
+                           <a href="#" class="btn btn-primary btn-lg" id="find-moderator">Find User</a>
                            <input type="text" />
                            <br>
                            <br>
-                           <a href="#" class="btn btn-primary brn-lg" id="save-moderator">Save List</a>
+                           <a href="#" class="btn btn-primary btn-lg" id="save-moderator">Save List</a>
                         </div>
                         <div class="modal-footer">
                         </div>
@@ -454,13 +495,66 @@
                   </p>
                </div>
             </div>
-            <!-- add catalog item section -->
-            <div class="panel-landing" id="add_item_block">
-               <div class="avatar-section">
-                  <img src="http://bestanimations.com/Money/Coins/gold-coins-animated-gif.gif" class="img-rounded avatar" id="avatar-image">
-               </div>
-               <h1 class="landing-heading">Store</h1>
+            <!-- Purchase History screen -->
+            <div class="panel-landing" id="purchase-view">
                <div class="container">
+                  <h1 class="landing-heading">Purchases</h1>
+                  <div data-role="content" id="purchase-history">
+                  </div>
+                  <p>
+                     <a href="#" class="btn btn-primary btn-lg" id="return-from-purchases">Menu</a>
+                  </p>
+               </div>
+            </div>
+                        <!--orderModal -->
+            <div class="modal fade" id="orderModal" role="dialog">
+               <div class="modal-dialog">
+                  <!-- orderModal content -->
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Order</h2>
+                     </div>
+                     <p>
+                     <div id="order-content">
+                    <div id="vendorListings"></div>
+                    </div>
+                     </p>
+                     <div class="modal-body">
+                        <div class="container">
+                           <div id="wallet-data">
+                               <ol id="orderList">
+                               </ol>
+                           </div>
+                           <br>
+                           <br>
+                           <a href="#" class="btn btn-primary btn-lg" id="make-purchase">Purchase</a>
+                           <a href="#" class="btn btn-primary btn-lg" id="cancel-purchase">Cance</a>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <br />
+               <br />
+               <p class="lead">
+               </p>
+            </div>
+                       <!--wallet Modal -->
+            <div class="modal fade" id="addItemModal" role="dialog">
+               <div class="modal-dialog">
+                  <!-- walletModal content -->
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Add Catalog Item</h2>
+                     </div>
+                     <p>
+                     <div id="amount"></div>
+                     </p>
+                     <div class="modal-body">
+                        <div class="container">
                   <form id="add_item" >
                      <fieldset>
                         <label class="good">
@@ -520,18 +614,16 @@
                         <a href="#" id="cancel-sc-item" style type="submit" class="btn btn-primary">Cancel</a>
                      </fieldset>
                   </form>
-               </div>
-            </div>
-            <!-- Purchase screen -->
-            <div class="panel-landing" id="purchase-view">
-               <div class="container">
-                  <h1 class="landing-heading">Purchases</h1>
-                  <div data-role="content" id="purchase-history">
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                     
                   </div>
-                  <p>
-                     <a href="#" class="btn btn-primary btn-lg" id="return-from-purchases">Menu</a>
-                  </p>
                </div>
+               <br />
+               <br />
+               <p class="lead">
+               </p>
             </div>
             <!-- Site wrapper -->
          </div>
@@ -541,10 +633,14 @@
       <script src="api\c4c.js"></script>
       <script src="api\coins-gps.js"></script>
       <script src="api\coinAjax.js"></script>
-      <script src="client\modals.js"></script>
+      <script src="client\queue.js"></script>
+      
+      
       <script src="client\toggles.js"></script>
-      <script src="client\processors.js"></script>
+      
       <script src="client\client.js"></script>
       <script src="app.js"></script>
+      <script src="client\processors.js"></script>
+
    </body>
 </html>

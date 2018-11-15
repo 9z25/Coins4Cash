@@ -78,8 +78,8 @@ module.exports.getSales = () => {
 }
 
 module.exports.getOrder = (orderId) => {
-    if (orderId !== undefined) {
-        url = "http://localhost:4002/ob/profile/" + orderId;
+    if (orderId) {
+        url = "http://localhost:4002/ob/orders/" + orderId;
         return axios(url, {
             responseType: "json",
             headers: {
@@ -89,6 +89,8 @@ module.exports.getOrder = (orderId) => {
             mode: "cors",
             crossDomain: true
         });
+    } else {
+    	return `{"error":"orderId is null"}`;
     }
 }
 
@@ -188,4 +190,19 @@ module.exports.refundOrder = (json) => {
     } else {
         return;
     }
+}
+
+module.exports.getCases = (params) => {
+	if(params) url = "http://localhost:4002/ob/cases" + params;
+    url = "http://localhost:4002/ob/cases?limit=&offsetId=";
+    return axios(url, {
+        responseType: "json",
+        headers: {
+            Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
+            "Access-Control-Allow-Origin": "*",
+        },
+        method: "GET",
+        mode: "cors",
+        crossDomain: true
+    });
 }
