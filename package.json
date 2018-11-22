@@ -27,6 +27,8 @@
     "blockstack": "^0.15.0",
     "body-parser": "^1.18.3",
     "buffer": "^5.2.1",
+    "coffeescript": "^2.3.2",
+    "fs": "0.0.1-security",
     "install": "^0.12.2"
   }
 }

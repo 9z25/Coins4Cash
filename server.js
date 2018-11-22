@@ -1,11 +1,11 @@
-var http = require("http");
+
+var https = require("https");
 const express = require("express");
 const opn = require("opn");
+const fs = require("fs");
 var bodyParser = require("body-parser");
 const app = express();
 const port = 5000;
-
-
 
 app.use(bodyParser.json());
 
@@ -16,10 +16,14 @@ Image = require("./public/models/image");
 Listing = require("./public/models/listing");
 Order = require("./public/models/order");
 Wallet = require("./public/models/wallet");
+Cases = require("./public/models/cases");
 
 let url = "";
 let json;
 
+
+ 
+var rootCas = require('ssl-root-cas').create();
 //Profile Calls
 app.post("/ob/profile/", function(req, res, next) {
 	console.log("test 1 : " + req.body);
@@ -42,7 +46,6 @@ app.post("/ob/profile/", function(req, res, next) {
 });
 
 app.get("/ob/profile/", function(req, res, next) {
-
     Profile.getProfile().then((obj) => {
         res.json(obj.data);
     }).catch((err) => {
@@ -52,7 +55,7 @@ app.get("/ob/profile/", function(req, res, next) {
 });
 
 app.put("/ob/profile/", function(req, res, next) {
-	console.log(req.body);
+
     Profile.putProfile(req.body).then((obj) => {
         res.json(obj.data);
     }).catch((err) => {
@@ -60,7 +63,14 @@ app.put("/ob/profile/", function(req, res, next) {
     });
 });
 
-
+app.patch("/ob/profile/", function(req, res, next) {
+console.log("TEST " + req.body);
+    Profile.patchProfile(req.body).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("51, " + err);
+    });
+});
 
 
 //get Profile
@@ -124,17 +134,41 @@ app.get("/ob/listing/", function(req, res) {
     });
 });
 
-app.get("/ob/listing/:_hash", function(req, res) {
-    let hash = req.params._hash;
-    Listing.getListing(hash).then((obj) => {
+app.get("/ob/listing/:_id/:_slug", function(req, res) {
+    let pID = req.params._id;
+    let slug = req.params._slug;
+ 
+    Listing.getListing(pID,slug).then((obj) => {
         res.send(obj.data);
     }).catch((err) => {
         console.log("120, getListing :: " + err);
     });
 });
 
+app.get("/ob/listing/:_slug", function(req, res) {
+    let pID = req.params._id;
+    let slug = req.params._slug
+    
+    Listing.getListing(undefined,slug).then((obj) => {
+        res.send(obj.data);
+    }).catch((err) => {
+        console.log("120, getListing :: " + err);
+    });
+});
+
+app.get("/ob/listings/:_id/", function(req, res) {
+    let pID = req.params._id;
+    Listing.getListing(pID).then((obj) => {
+    	res.send(obj.data);
+    }).catch((err) => {
+    	console.log("151, get listings :: " + err);
+    })
+
+});
+
+
 app.post("/ob/listing/", function(req, res) {
-    Listing.postListing().then((obj) => {
+    Listing.postListing(req.body).then((obj) => {
         res.json(obj.data);
     }).catch((err) => {
         console.log("128, postListing :: " + err);
@@ -142,12 +176,21 @@ app.post("/ob/listing/", function(req, res) {
 });
 
 app.put("/ob/listing/", function(req, res) {
-    Listing.postListing().then((obj) => {
+    Listing.putListing(req.body).then((obj) => {
         res.json(obj.data);
     }).catch((err) => {
         console.log("136, postListing :: " + err);
     });
 });
+
+app.patch("/ob/listing/", function(req, res) {
+    Listing.patchListing(req.body).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("136, postListing :: " + err);
+    });
+});
+
 //wallet
 app.post("/wallet/spend", function(req, res) {
 	console.log(req.method)
@@ -179,7 +222,7 @@ app.post("/wallet/resync", function(req, res) {
 //calls for wallet
 app.get("/wallet/addr", function(req, res) {
 	Wallet.getAddr().then((obj) => {
-	        res.send(obj.data);
+	        res.json(obj.data);
 	    }).catch((err) => {
 	        console.log("183, getAddr :: " + err);
 	    });	
@@ -305,6 +348,77 @@ app.get("/ob/cases/", function(req, res, next) {
 
 });
 
+app.post("/ob/cases/", function(req, res, next) {
+	console.log(req.body);
+    Order.openDispute(req.body).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("43, myProfile :: " + err);
+    });
+});
+
+//followers and following
+app.get("/ob/following", function(req, res, next) {
+
+    Profile.getFollowing().then((obj) => {
+        res.json(obj.data);
+    }).catch((err, e) => {
+        console.log("315, myProfile :: " + err);
+        console.log("315" + e);
+    });
+
+});
+
+app.get("/ob/followers", function(req, res, next) {
+
+    Profile.getFollowers().then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("315, myProfile :: " + err);
+    });
+
+});
+
+app.get("/ob/isfollowing/:_peerID", function(req, res, next) {
+let pid = req.params._peerID;
+    Profile.isFollowing(pid).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("315, myProfile :: " + err);
+    });
+
+});
+
+app.get("/ob/followsme/:_peerID", function(req, res, next) {
+let pid = req.params._peerID;
+    Profile.followsMe(pid).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("315, myProfile :: " + err);
+    });
+
+});
+
+app.post("/ob/follow/", function(req, res, next) {
+let json = req.body;
+    Profile.isFollowing(json).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("315, myProfile :: " + err);
+    });
+
+});
+
+app.post("/ob/unfollow/", function(req, res, next) {
+let json = req.body;
+    Profile.isFollowing(json).then((obj) => {
+        res.json(obj.data);
+    }).catch((err) => {
+        console.log("315, myProfile :: " + err);
+    });
+
+});
+
 
 function allowCrossDomain(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
@@ -312,13 +426,18 @@ function allowCrossDomain(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Content-Type")
     next()
 }
-
 app.use(allowCrossDomain)
 app.use("/", express.static(__dirname + "/public"))
-app.listen(port, (err) => {
-    if (err) {
-        return console.log("something bad happened", err)
-    }
-    console.log(`server is listening on ${port}`)
-    opn("http://localhost:5000")
-})
+
+
+rootCas
+  .addFile(__dirname + '\\freshmintrecords_com.ca-bundle')
+  ;
+
+
+var options = {
+	ca: rootCas,
+	cert: fs.readFileSync('\\freshmintrecords_com.crt'),
+	key: fs.readFileSync('\\freshmintrecords_com.txt')
+}
+https.createServer(options, app).listen(port);
