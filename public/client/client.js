@@ -1,3 +1,5 @@
+
+
 //Add photo and create listing on Item screen
 $("input[type=file]").on("change", (evt) => {
 
@@ -23,13 +25,14 @@ $("input[type=file]").on("change", (evt) => {
         coinAjax.img("POST", undefined, json).then((res) => {
             var json = res;
             json.forEach((i) => {
+            var listing = {};
             listing.filename = i.filename;
             listing.hashes.tiny = i.hashes.tiny;
             listing.hashes.small = i.hashes.small;
             listing.hashes.medium = i.hashes.medium;
             listing.hashes.large = i.hashes.large;
             listing.hashes.original = i.hashes.original;
-            //Object.assign(x,y);
+            queue.loadListingImg(listing)
 
         });
 
@@ -47,18 +50,18 @@ $(document).ready(function() {
     $(".good").show();
     $("#sc_type").change(() => {
         //catalog item type
-        if ($("#sc_type").val() == "physical_good") {
+        if ($("#sc_type").val() == "PHYSICAL_GOOD") {
             $(".digital_good").hide();
             $(".crypto").hide();
             $(".physical_good").show();
             $(".good").show();
-        } else if ($("#sc_type").val() == "digital_good" || $("#sc_type").val() == "service") {
+        } else if ($("#sc_type").val() == "DIGITAL_GOOD" || $("#sc_type").val() == "SERVICE") {
             $(".physical_good").hide();
             $(".good").show();
             $(".digital_good").show();
             $(".crypto").hide();
 
-        } else if ($("#sc_type").val() == "cryptocurrency") {
+        } else if ($("#sc_type").val() == "CRYPTOCURRENCY") {
             $(".physical_good").hide();
             $(".good").hide();
             $(".digital_good").hide();
@@ -67,3 +70,14 @@ $(document).ready(function() {
     })
 });
 
+//toggle
+
+    $('#follow-profile').change(function() {
+  if($(this).prop('checked') == true){
+    json = queue.loadfollower($("#store-view").data());
+    coinAjax.friends("FOLLOW",json);
+  } else {
+    json = queue.loadfollower($("#store-view").data());
+    coinAjax.friends("UNFOLLOW",json);
+  }
+})

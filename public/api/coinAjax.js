@@ -45,8 +45,8 @@ var coinAjax = {
     getConnectedPeers: () => {
         return $.ajax({
             async: true,
-            type: "GET",
-            url: "http://localhost:5000/ob/peers/",
+            method: "GET",
+            url: "https://freshmintrecords.com:5000/ob/peers/",
             headers: {
                 "X-Requested-With": "XMLHttpRequest",
                 "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
@@ -61,14 +61,14 @@ var coinAjax = {
         });
     },
 
-    profile: (opt, profile, pID) => {
+    profile: (verb, profile, pID) => {
         var json;
         json = JSON.stringify(profile);
-        var path = "http://localhost:5000/ob/profile/";
-        if (pID) path = "http://localhost:5000/ob/profile/" + pID;
+        var path = "https://freshmintrecords.com:5000/ob/profile/";
+        if (pID) path = "https://freshmintrecords.com:5000/ob/profile/" + pID;
         return $.ajax({
             async: true,
-            type: opt,
+            method: verb,
             url: path,
             contentType: "application/json",
             headers: {
@@ -78,13 +78,15 @@ var coinAjax = {
             dataType: "json",
             processData: false,
             data: json,
-            sucess: (data) => {}
+            success: (data) => {
+
+            }
         });
     },
     img: (verb, imgHash, json) => {
-        path = "http://localhost:5000/ob/images/";
+        path = "https://freshmintrecords.com:5000/ob/images/";
         if (imgHash != undefined) {
-            path = "http://localhost:5000/ob/images/" + imgHash;
+            path = "https://freshmintrecords.com:5000/ob/images/" + imgHash;
             return $.ajax({
                 async: true,
                 url: path,
@@ -117,9 +119,12 @@ var coinAjax = {
             });
         }
     },
-    listing: (verb, guid, json) => {
-        path = "http://localhost:5000/ob/listing/";
-        if (guid) path = "http://localhost:5000/ob/listing/" + guid;
+    listing: (verb, guid, json, slug) => {
+        path = "https://freshmintrecords.com:5000/ob/listing/";
+        if (guid) path = "https://freshmintrecords.com:5000/ob/listings/" + guid;
+        if (slug) path = "https://freshmintrecords.com:5000/ob/listing/" + slug;
+        if (slug && guid) path = "https://freshmintrecords.com:5000/ob/listing/" + guid + "/" + slug
+
         return $.ajax({
             async: true,
             url: path,
@@ -136,7 +141,7 @@ var coinAjax = {
         });
     },
     exchangeRate: () => {
-        path = "http://localhost:5000/ob/exchangerate/";
+        path = "https://freshmintrecords.com:5000/ob/exchangerate/";
         return $.ajax({
             async: true,
             url: path,
@@ -151,8 +156,8 @@ var coinAjax = {
         });
     },
     moderator: (verb, peerID) => {
-        path = "http://localhost:5000/ob/moderator/";
-        if (peerID) path = "http://localhost:5000/ob/moderator/" + peerID;
+        path = "https://freshmintrecords.com:5000/ob/moderator/";
+        if (peerID) path = "http://freshmintrecords.com:5000/ob/moderator/" + peerID;
         return $.ajax({
             async: true,
             url: path,
@@ -167,8 +172,26 @@ var coinAjax = {
             }
         });
     },
+    case: (verb,json, peerID) => {
+        path = "https://freshmintrecords.com:5000/ob/cases/";
+        if (peerID) path = "http://freshmintrecords.com:5000/ob/moderator/" + peerID;
+        return $.ajax({
+            async: true,
+            url: path,
+            contentType: "application/json",
+            header: {
+                "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
+            },
+            method: verb,
+            data: JSON.stringify(json),
+            success: (data) => {},
+            error: (err) => {
+                alert("error getting purchase moderator data");
+            }
+        });
+    },
     getEstimate: (json) => {
-        path = "http://localhost:4002/ob/estimatetotal";
+        path = "https://freshmintrecords.com:4002/ob/estimatetotal/";
         return $.ajax({
             async: true,
             url: path,
@@ -186,11 +209,11 @@ var coinAjax = {
     },
     purchase: (verb, json, cmd) => {
         if (cmd === undefined) {
-            path = "http://localhost:5000/ob/purchase";
+            path = "https://freshmintrecords.com:5000/ob/purchase/";
         } else if (cmd === "CANCEL") {
-            path = "http://localhost:5000/ob/ordercancel";
+            path = "https://freshmintrecords.com:5000/ob/ordercancel/";
         } else if (cmd === "COMPLETE") {
-            path = "http://localhost:5000/ob/ordercompletion";
+            path = "https://freshmintrecords.com:5000/ob/ordercompletion/";
         }
         return $.ajax({
             async: true,
@@ -208,7 +231,7 @@ var coinAjax = {
         });
     },
     order: (verb, orderId, json, cmd) => {
-        path = "http://localhost:5000/ob/order/" + orderId;
+        path = "https://freshmintrecords.com:5000/ob/order/" + orderId;
 
 
         return $.ajax({
@@ -227,7 +250,7 @@ var coinAjax = {
         });
     },
     sales: (verb, orderId, json) => {
-        path = "http://localhost:5000/ob/sales/";
+        path = "https://freshmintrecords.com:5000/ob/sales/";
         return $.ajax({
             async: true,
             url: path,
@@ -248,47 +271,44 @@ var coinAjax = {
 
         var verb;
         if (proc === "ADDR") {
-            path = "http://localhost:5000/wallet/addr/";
+            path = "https://freshmintrecords.com:5000/wallet/addr/";
             verb = "GET";
         } else if (proc === "BALANCE") {
-            path = "http://localhost:5000/wallet/balance/"
+            path = "https://freshmintrecords.com:5000/wallet/balance/"
             verb = "GET";
         } else if (proc === "SEED") {
-            path = "http://localhost:5000/wallet/seed/";
+            path = "https://freshmintrecords.com:5000/wallet/seed/";
             verb = "GET";
         } else if (proc === "SPEND") {
             if (!json) {
                 return;
             } else {
-                path = "http://localhost:5000/wallet/spend";
+                path = "https://freshmintrecords.com:5000/wallet/spend/";
                 verb = "POST";
             }
         } else if (proc === "ESTIMATE") {
-            path = "http://localhost:5000/wallet/estimatefees";
+            path = "https://freshmintrecords.com:5000/wallet/estimatefees/";
             verb = "GET";
         } else if (proc === "BUMP") {
             if (txid) {
-                path = "http://localhost:5000/wallet/bumpfees" + txid;
+                path = "http://freshmintrecords.com:5000/wallet/bumpfees/" + txid;
                 verb = "POST";
             } else {
                 return;
             }
         } else if (proc === "HISTORY") {
-            path = "http://localhost:5000/wallet/history/";
+            path = "https://freshmintrecords.com:5000/wallet/history/";
             verb = "GET";
         } else if (proc === "STATUS") {
-            path = "http://localhost:5000/wallet/status/";
+            path = "https://freshmintrecords.com:5000/wallet/status/";
             verb = "GET";
         } else if (proc === "RESYNC") {
-            path = "http://localhost:5000/wallet/resync/";
+            path = "https://freshmintrecords.com:5000/wallet/resync/";
             verb = "POST";
         } else {
             return;
         }
         if (verb && path) {
-            alert("1: " + verb);
-            alert("2: " + path);
-            alert("3 : " + json);
             return $.ajax({
             async: true,
             url: path,
@@ -306,5 +326,44 @@ var coinAjax = {
         });
         }
     },
+    friends: (which, json, pid) => {
+        var path;
+        var verb;
+        if (which == "FOLLOWING") {
+            path = "https://freshmintrecords.com:5000/ob/following/";
+            verb = "GET";
+        } else if (which == "FOLLOWERS") {
+            path = "https://freshmintrecords.com:5000/ob/followers/";
+            verb = "GET";
+        } else if (which == "ISFOLLOWING") {
+            path = "https://freshmintrecords.com:5000/ob/isfollowing/" + pid;
+            verb = "GET";
+        }  else if (which == "FOLLOWSME") {
+            path = "https://freshmintrecords.com:5000/ob/followsme/" + pid;
+            verb = "GET";
+        } else if (which == "FOLLOW") {
+            path = "https://freshmintrecords.com:4002/ob/follow/" + pid;
+            verb = "POST";
+        } else if (which == "UNFOLLOW") {
+            path = "https://freshmintrecords.com:4002/ob/unfollow/" + pid;
+            verb = "POST";
+        }
+        return $.ajax({
+            async: true,
+            url: path,
+            dataType:"json",
+            contentType: "application/json",
+            header: {
+                "Authorization": "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng=="
+            },
+            method: verb,
+            data: JSON.stringify(json),
+            success: (data) => {},
+            error: (err) => {
+                alert("error getting contacts");
+            }
+        }); 
+
+    }
 
 }

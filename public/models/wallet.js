@@ -1,7 +1,7 @@
 const axios = require("axios");
 let id = "";
 let body = "";
-let url = "http://localhost:4002/wallet/"
+let url = "https://freshmintrecords.com:4002/wallet/"
 let opt = "";
 let uri = ""
 let options = {
@@ -18,7 +18,6 @@ module.exports.getAddr = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "GET",
         mode: "cors",
@@ -32,7 +31,6 @@ module.exports.getBalance = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "GET",
         mode: "cors",
@@ -46,7 +44,6 @@ module.exports.getSeed = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "GET",
         mode: "cors",
@@ -76,7 +73,6 @@ module.exports.estimateFees = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "GET",
         mode: "cors",
@@ -94,7 +90,6 @@ module.exports.bumpFee = (txid) => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "POST",
         mode: "cors",
@@ -109,7 +104,6 @@ module.exports.getHistory = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "POST",
         mode: "cors",
@@ -123,7 +117,6 @@ module.exports.getStatus = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "POST",
         mode: "cors",
@@ -137,7 +130,6 @@ module.exports.resync = () => {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
-            "Access-Control-Allow-Origin": "*",
         },
         method: "POST",
         mode: "cors",

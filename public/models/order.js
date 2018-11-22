@@ -1,7 +1,7 @@
 const axios = require("axios");
 let id = "";
 let body = "";
-let url = "http://localhost:4002/ob/"
+let url = "https://freshmintrecords.com:4002/ob/"
 let opt = "";
 let options = {
     headers: {
@@ -13,12 +13,13 @@ const Order = module.exports;
 
 module.exports.getEstimate = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/estimatetotal/";
+        url = "https://freshmintrecords.com:4002/ob/estimatetotal/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -31,12 +32,13 @@ module.exports.getEstimate = (json) => {
 }
 
 module.exports.purchaseHistory = () => {
-    url = "http://localhost:4002/ob/purchases?limit=&offsetId=";
+    url = "https://freshmintrecords.com:4002/ob/purchases?limit=&offsetId=/";
     return axios(url, {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
             "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
         },
         method: "GET",
         mode: "cors",
@@ -46,12 +48,13 @@ module.exports.purchaseHistory = () => {
 
 module.exports.purchase = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/purchase/";
+        url = "https://freshmintrecords.com:4002/ob/purchase/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -64,12 +67,13 @@ module.exports.purchase = (json) => {
 }
 
 module.exports.getSales = () => {
-    url = "http://localhost:4002/ob/sales?limit=&offsetId=";
+    url = "https://freshmintrecords.com:4002/ob/sales?limit=&offsetId=/";
     return axios(url, {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
             "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
         },
         method: "GET",
         mode: "cors",
@@ -79,7 +83,7 @@ module.exports.getSales = () => {
 
 module.exports.getOrder = (orderId) => {
     if (orderId) {
-        url = "http://localhost:4002/ob/orders/" + orderId;
+        url = "https://freshmintrecords.com:4002/ob/orders/" + orderId;
         return axios(url, {
             responseType: "json",
             headers: {
@@ -97,12 +101,13 @@ module.exports.getOrder = (orderId) => {
 //for offline
 module.exports.cancelOrder = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/ordercancel";
+        url = "https://freshmintrecords.com:4002/ob/ordercancel/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -116,12 +121,13 @@ module.exports.cancelOrder = (json) => {
 
 module.exports.confirm = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/orderconfirmation";
+        url = "https://freshmintrecords.com:4002/ob/orderconfirmation/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -136,12 +142,13 @@ module.exports.confirm = (json) => {
 
 module.exports.completeOrder = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/ordercompletion";
+        url = "https://freshmintrecords.com:4002/ob/ordercompletion/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -155,12 +162,13 @@ module.exports.completeOrder = (json) => {
 
 module.exports.fulfillOrder = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/orderfulfillment";
+        url = "https://freshmintrecords.com:4002/ob/orderfulfillment/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -175,12 +183,13 @@ module.exports.fulfillOrder = (json) => {
 
 module.exports.refundOrder = (json) => {
     if (json !== null) {
-        url = "http://localhost:4002/ob/refund";
+        url = "https://freshmintrecords.com:4002/ob/refund/";
         return axios(url, {
             responseType: "json",
             headers: {
                 Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
                 "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
             },
             method: "POST",
             mode: "cors",
@@ -193,16 +202,33 @@ module.exports.refundOrder = (json) => {
 }
 
 module.exports.getCases = (params) => {
-	if(params) url = "http://localhost:4002/ob/cases" + params;
-    url = "http://localhost:4002/ob/cases?limit=&offsetId=";
+	if(params) url = "https://freshmintrecords.com:4002/ob/cases/" + params;
+    url = "https://freshmintrecords.com:4002/ob/cases?limit=&offsetId=";
     return axios(url, {
         responseType: "json",
         headers: {
             Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
             "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
         },
         method: "GET",
         mode: "cors",
+        crossDomain: true
+    });
+}
+
+module.exports.openDispute = (json) => {
+    url = "https://freshmintrecords.com:4002/ob/opendispute/";
+    return axios(url, {
+        responseType: "json",
+        headers: {
+            Authorization: "Basic YzRjdGVzdGVyOlN0YXJ0QDEyMzY2Ng==",
+            "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "no-cache"
+        },
+        method: "POST",
+        mode: "cors",
+        data: json,
         crossDomain: true
     });
 }

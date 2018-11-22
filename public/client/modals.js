@@ -1,5 +1,4 @@
 
-
 window.onload = function(){
 //profile modal
 var profileModal = document.getElementById('profileModal');
@@ -8,15 +7,17 @@ var coinModal = document.getElementById('coinModal');
 var moderatorModal = document.getElementById('moderatorModal');
 var orderModal = document.getElementById('orderModal');
 var addItemModal = document.getElementById('addItemModal');
-
+var contactsModal = document.getElementById('contactsModal');
+var caseModal = document.getElementById('caseModal');
 // Get the button that opens the modal
 var btn0 = document.getElementById("profile-button");
 var btn1 = document.getElementById("wallet-button");
 var btn2 = document.getElementById("post");
 var btn3 = document.getElementById("moderators-button");
 var btn4 = document.getElementById("order-button");
-var btn5 = document.getElementById("add_catalog_item_button");
-
+var btn5 = document.getElementById("add-catalog-item-btn");
+var btn6 = document.getElementById("contacts-button");
+var btn7 = document.getElementById("cases-button");
 
 // Get the <span> element that closes the modal
 var span0 = document.getElementsByClassName("close")[0];
@@ -25,11 +26,13 @@ var span2 = document.getElementsByClassName("close")[2];
 var span3 = document.getElementsByClassName("close")[3];
 var span4 = document.getElementsByClassName("close")[4];
 var span5 = document.getElementsByClassName("close")[5];
+var span6 = document.getElementsByClassName("close")[6];
+var span7 = document.getElementsByClassName("close")[7];
 
 // Profile modal will display data on form
 btn0.onclick = () => {
     profileModal.style.display = "block";
-    getProfileData();
+    getProfile();
 }
 
 //wallet modal will display balance and has send and recieve payments abilities
@@ -39,9 +42,15 @@ btn1.onclick = () => {
 }
 
 
-//coin modal that calls openOrder(). openOrder() will display order data on modal
+//add to service catalog
 btn2.onclick = () => {
-  addItemModal.style.display = "block";
+  coinModal.style.display = "block";
+  $("#create-sc-item").click(() => {
+        coinModal.style.display = "none";
+    });
+    $("#cancel-sc-item").click(() => {
+        coinModal.style.display = "none";
+    });
 }
 
 
@@ -54,6 +63,8 @@ btn3.onclick = () => {
         moderatorModal.style.display = "none";
     });
 }
+
+
 btn5.onclick = () => {
     addItemModal.style.display = "block";
     $("#create-sc-item").click(() => {
@@ -64,8 +75,39 @@ btn5.onclick = () => {
     });
 }
 
+btn6.onclick = () => {
+    contactsModal.style.display = "block";
+    $("#following").click(() => {
+        document.getElementById("contact-list").innerHTML = "";
+        coinAjax.friends("FOLLOWING").then((res) =>{
+            processProfileJSON(res,"CONTACTS");
+        });
+    });
+    $("#followers").click(() => {
+        document.getElementById("contact-list").innerHTML = "";
+        coinAjax.friends("FOLLOWERS").then((res) =>{
+            processProfileJSON(res,"CONTACTS");
+        });
+    });
+    $("#closeContacts").click(() => {
+        document.getElementById("contact-list").innerHTML = "";
+        contactsModal.style.display = "none";
+    });
+}
 //btn4.onclick = () => {}
+$("#close-orders-modal").click(() => {
+        $("#orderList").empty();
+        orderModal.style.display = "none";
+    });
 
+
+btn7.onclick = () => {
+    caseModal.style.display = "block";
+    getCases();
+    $("#close-case-modal").click(() => {
+        caseModal.style.display = "none";
+    });
+}
 
 // When the user clicks on <span> (x), close the modal
 span0.onclick = () => {
@@ -84,13 +126,17 @@ span3.onclick = () => {
     moderatorModal.style.display = "none";
 }
 
-
 span4.onclick = () => {
-    addItemModal.style.display = "none";
+    orderModal.style.display = "none";
 }
-
 span5.onclick = () => {
     addItemModal.style.display = "none";
+}
+span6.onclick = () => {
+    contactsModal.style.display = "none";
+}
+span7.onclick = () => {
+    caseModal.style.display = "none";
 }
 
 
@@ -132,36 +178,144 @@ window.onclick = (event) => {
         addItemModal.style.display = "none";
     }
 }
+
+window.onclick = (event) => {
+    if (event.target == contactsModal) {
+        contactsModal.style.display = "none";
+    }
 }
 
+window.onclick = (event) => {
+    if (event.target == caseModal) {
+        caseModal.style.display = "none";
+    }
+}
+}
 
+//item func
+function itemFunc(slug, pID, state) {
+   
+var json;
+     addItemModal.style.display = "block";
+if (state === "EXTERNAL"){
+    $("#make-sc-purchase").show();
+    $("#create-sc-item").hide();
+    $("#save-sc-item").hide()    
+} else if(state !== "INVENTORY"){
+    $("#make-sc-purchase").hide();
+    $("#save-sc-item").show()
+    $("#create-sc-item").show();  
+    }
+    else {
+        $("#save-sc-item").hide()
+    }
+    alert('test');
+    alert(pID);
+    alert(slug);
+coinAjax.listing("GET",pID,undefined,slug).then((res) => {
+    var i = res.listing;
 
-function openOrderFunc(order) {
+         var itemTitle = document.createTextNode(i.item.title);
+         var desc = document.createTextNode(i.item.description);
+         var peerID = document.createTextNode(i.vendorID.peerID);
+         var type = document.createTextNode(i.metadata.contractType);
+ 
+         var a = document.forms.add_item.sc_name_input;
+         var b = document.forms.add_item.sc_type;
+         var d = document.forms.add_item.currency;
+         var e = $("#price")
+         var e = document.forms.add_item.condition;
+         var h = document.forms.add_item.sc_desc;
+
+         $("#sc_type option[value="+i.metadata.contractType+"]").prop('selected',true);
+
+         a.setAttribute("value",i.item.title);
+         if(i.metadata.coinType) c.setAttribute("value",i.metadata.coinType);
+         e.show();
+         $("#price-input").show();
+         e.text(i.item.price);
+         if(i.metadata.contractType === "PHYSICAL") d.setAttribute("value",i.item.condition);
+         h.setAttribute("value",i.item.description);
+
+ 
+         //a.appendChild(itemTitle);
+        // c.appendChild(peerID);
+        // d.appendChild(type);
+ 
+         if (i.item.images) {
+             i.item.images.forEach((y) => {
+                 var filename = document.createTextNode(i.image.filename);
+                 var a = document.createElement("LI");
+                 a.appendChild(fileName)
+                 orderList.appendChild(a);
+                 if (y.medium != null) {
+                     var images = coinAjax.img("GET", y.medium).then(function(res) {
+                         var imm = $("#sc_pic");
+                         var urlCreator = window.URL || window.webkitURL;
+                         var imageUrl = urlCreator.createObjectURL(res);
+                         imm.setAttribute("src", imageUrl);
+                         imm.setAttribute("width", "304");
+                         imm.setAttribute("height", "228");
+                         var image = $("li").append(imm);
+                         image.append("#orderList")
+                     });
+                 }
+             });
+         }
+ 
+
+});
+}
+//orderModal
+function openOrderFunc(order,oID,state) {
+var json;
  orderModal.style.display = "block";
+ if(state !== "PURCHASED"){
+    $("#open-dispute").hide();
+ }
+
+        $("#open-dispute").click(() => {
+         var r = prompt("Reason for dispute:");
+         json = queue.loadDispute(oID, r);
+    coinAjax.case("POST",json).then((res) => {
+        alert(res);
+    });
+
+    });
+
     var str = JSON.stringify(order.contract.vendorListings);
     var listings = JSON.parse(str);
     var orderList = document.getElementById("orderList");
+    
+    var e = document.createElement("LI");
+        e.appendChild(document.createTextNode(JSON.stringify(order.state)));
+        orderList.appendChild(e);
+
     if (listings.length > 10) listings.slice(0, 10);
     listings.forEach(function(i) {
         var itemTitle = document.createTextNode(i.item.title);
         var desc = document.createTextNode(i.item.description);
         var peerID = document.createTextNode(i.vendorID.peerID);
         var type = document.createTextNode(i.metadata.contractType);
+
         var a = document.createElement("LI");
         var b = document.createElement("LI");
         var c = document.createElement("LI");
         var d = document.createElement("LI");
+        
 
         a.appendChild(itemTitle);
         b.appendChild(desc);
         c.appendChild(peerID);
         d.appendChild(type);
+        
 
         orderList.appendChild(a);
         orderList.appendChild(b);
         orderList.appendChild(c);
         orderList.appendChild(d);
-        $("#orderList").append(orderList);
+        
+
         if (i.item.images) {
             i.item.images.forEach((y) => {
                 var filename = document.createTextNode(i.image.filename);
@@ -181,18 +335,19 @@ function openOrderFunc(order) {
                     });
                 }
             });
-
-
         }
 
-    });
+
+});
+
 
 }
 
 
-function getProfileData(){
-      coinAjax.profile('GET').then((res) => {
+function getProfile(){
+    coinAjax.profile("GET").then((res) => { 
         var profile = res;
+
         document.forms.profilefrm.name.value = profile.name;
         document.forms.profilefrm.location.value = profile.location;
         document.forms.profilefrm.about.value = profile.about;
@@ -210,9 +365,17 @@ function getProfileData(){
         } else {
             return;
         }
-
     });
 }
+
+function getProfileData(){
+      coinAjax.profile('GET').then((res) => {
+        queue.addProfile(res);
+        console.log(queue.returnProfile)
+    });
+      console.log(queue.returnProfile());
+}
+
 //save profile data from profileModal
 function saveProfile() {
     var json = {
@@ -298,26 +461,36 @@ function renderModTable(){
 
 
 function showBalance(){
-    var balance;
     coinAjax.wallet("BALANCE").then((res) => {
-        balance = res.confirmed * .00000001
+var exchangeRate;
+    var balance = res.confirmed * .00000001
+    alert(balance);
         var amount = document.createTextNode("Amount :" + balance + " coins");
         document.getElementById("amount").append(amount);
         document.getElementById("amount").append(document.createElement("BR"));
-    }).catch((err) => {
+
+        coinAjax.exchangeRate().then((rate) => {
+        exchangeRate = rate * balance;
+        var countryCurrency = document.createTextNode("USD : " + exchangeRate + " $")
+        document.getElementById("amount").append(countryCurrency);
+        }).catch((err) => {
         alert(err.message);
     });
-    coinAjax.exchangeRate().then((res) => {
-        var convertedAmount = res * balance;
-        var countryCurrency = document.createTextNode("USD : " + convertedAmount + " $")
-        document.getElementById("amount").append(countryCurrency);
+
+        })
+}
+
+function getBalance(){
+    coinAjax.wallet("BALANCE").then((res) => {
+        queue.confirmed = res.confirmed;
+        queue.height = res.height;
+        queue.unconfirmed = res.unconfirmed;
+
+        coinAjax.exchangeRate().then((res) => {
+        queue.exchangeRate = res;
+        }).catch((err) => {
+        alert(err.message);
     });
+});
 }
 
-
-
-//display itemModal to purchase item 
-function items(profile) {
-    alert("680, buy");
-
-}

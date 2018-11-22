@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none"
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
 
@@ -66,37 +66,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         old.apply(window, arguments);
     };
 
-    var queue = new Queue();
-    queue.image.filename = "test123";
-    console.log(queue.image.filename);
 
-    coinAjax.profile('GET').then((res) => {
-        var profile = res;
-        var queue = new Queue();
-        queue.profile.peerID = profile.peerID;
-        queue.profile.handle = profile.handle;
-        queue.profile.name = profile.name;
-        queue.profile.location = profile.location;
-        queue.profile.about = profile.about;
-        queue.profile.shortDescription = profile.shortDescription;
-        queue.profile.nsfw = profile.nsfw;
-        queue.profile.vendor = profile.vendor;
-        queue.profile.moderator = profile.moderator;
-
-
-        if (queue.profile.contactInfo !== undefined) {
-            if (profile.contactInfo.website === undefined) document.forms.profilefrm.website.value = '';
-            else document.forms.profilefrm.website.value = queue.profile.contactInfo.website;
-            if (profile.contactInfo.email === undefined) document.forms.profilefrm.contactInfo.email.value = '';
-            else document.forms.profilefrm.email.value = queue.profile.contactInfo.email;
-            if (profile.contactInfo.phoneNumber === undefined) document.forms.profilefrm.phone.value = '';
-            else document.forms.profilefrm.phone.value = queue.profile.contactInfo.phoneNumber;
-        } else {
-            return;
-        }
-
-        
-    });
+    
 
     document.getElementById("section-1").style.display = "block";
     document.getElementById("section-2").style.display = "none";
@@ -105,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById("store").style.display = "none";
     document.getElementById("store-list").style.display = "none";
     document.getElementById("store-view").style.display = "none";
-    document.getElementById("item-view").style.display = "none";
+      
     document.getElementById("purchase-view").style.display = "none";
     document.getElementById("sales-view").style.display = "none";
 
@@ -120,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none"
         document.getElementById("store-list").style.display = "none"
         document.getElementById("store-view").style.display = "none"
-        document.getElementById("item-view").style.display = "none"
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
 
@@ -141,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             document.getElementById("store").style.display = "none";
             document.getElementById("store-list").style.display = "none";
             document.getElementById("store-view").style.display = "none";
-            document.getElementById("item-view").style.display = "none";
+              
             document.getElementById("purchase-view").style.display = "none";
             document.getElementById("sales-view").style.display = "none";
 
@@ -169,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById("store").style.display = "none";
                 document.getElementById("store-list").style.display = "none";
                 document.getElementById("store-view").style.display = "none";
-                document.getElementById("item-view").style.display = "none";
+                  
                 document.getElementById("purchase-view").style.display = "none";
                 document.getElementById("sales-view").style.display = "none";
 
@@ -194,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+        
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
         getPersonalListingsOnMap();
@@ -205,6 +175,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // button that takes you back to main menu from the trade coin page
     document.getElementById("return-from-map").addEventListener("click", function(event) {
+        document.getElementById("coin-catalog").innerHTML = '';
+
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "block";
@@ -212,30 +184,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
 
     });
     // Menu item that takes you to personal store
     document.getElementById("store-button").addEventListener("click", function(event) {
+        myStore();
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "none";
         document.getElementById("coins-gps").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("store").style.display = "block";
         document.getElementById("sales-view").style.display = "none";
-        myStore();
-    });
-
+        
+    
+});
 
 
     // go back to main menu from personal store
     document.getElementById("return-from-storemenu").addEventListener("click", function(event) {
+        document.getElementById("service-catalog").innerHTML = '';
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "block";
@@ -243,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
     });
@@ -261,6 +235,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // Store view button that takes to back to store listings
     document.getElementById("return-from-storeview").addEventListener("click", function(event) {
+        document.getElementById("item-list").innerHTML = "";
+
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "none";
@@ -268,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "block";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
 
@@ -276,7 +252,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // Main menu button that takes you to list of shops
     document.getElementById("shops").addEventListener("click", function(event) {
-
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "none";
@@ -284,16 +259,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "block";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
-
-
-
-
         //get an JSON array of peer IDs
         coinAjax.getConnectedPeers().then((res) => {
-            processStoreJSON(res);
+            processProfileJSON(res, "SHOPS");
         }).catch((e) => {
             alert("app.js, 316, " + e.statusText.toString());
         });
@@ -301,6 +272,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // Return to main menu from shop listings
     document.getElementById("return-from-browser").addEventListener("click", function(event) {
+        document.getElementById("return-profile-batch").innerHTML ="";
+
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "block";
@@ -308,45 +281,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
 
     });
 
-
-    // Return to store view from specific item
-    document.getElementById("leave-item-detail").addEventListener("click", function(event) {
-        document.getElementById("section-1").style.display = "none";
-        document.getElementById("section-2").style.display = "none";
-        document.getElementById("section-3").style.display = "none";
-        document.getElementById("coins-gps").style.display = "none";
-        document.getElementById("store").style.display = "none";
-        document.getElementById("store-list").style.display = "none";
-        document.getElementById("store-view").style.display = "block";
-        document.getElementById("item-view").style.display = "none";
-        document.getElementById("purchase-view").style.display = "none";
-        document.getElementById("sales-view").style.display = "none";
-    });
 
 
 
     document.getElementById("virtual").addEventListener("click", function(event) {
 
         //document.getElementById("listview-stores").innerHTML = "<li class="btn btn-primary btn-lg" id="store1">"++"<br>"++"<br>"++"</li>";
-    });
-
-    // Purchasing item after clicking buy
-    document.getElementById("buy-item").addEventListener("click", function(event) {
-
-    });
-
-    document.getElementById("store-location-track").addEventListener("click", function(event) {
-
-    });
-
-    document.getElementById("post").addEventListener("click", function(event) {
-
     });
 
 
@@ -370,15 +316,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "block";
         document.getElementById("sales-view").style.display = "none";
         getPurchaseHistory();
     });
 
 
-
+//return from purchases screen
     $("#return-from-purchases").click(() => {
+        document.getElementById("purchase-history").innerHTML = '';
+
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "block";
@@ -386,10 +334,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
+        
     });
+
     $("#orders-button").click(() => {
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
@@ -398,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "block";
 
@@ -408,10 +358,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             sli.forEach((i) => {
                 listSales(i);
-            })
+            });
         });
     });
+
     $("#return-to-store").click(() => {
+
         document.getElementById("section-1").style.display = "none";
         document.getElementById("section-2").style.display = "none";
         document.getElementById("section-3").style.display = "none";
@@ -419,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "block";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
     });
@@ -431,10 +383,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("store").style.display = "none";
         document.getElementById("store-list").style.display = "none";
         document.getElementById("store-view").style.display = "none";
-        document.getElementById("item-view").style.display = "none";
+          
         document.getElementById("purchase-view").style.display = "none";
         document.getElementById("sales-view").style.display = "none";
     });
+
+
 
 });
 
@@ -500,7 +454,6 @@ $("#create-crypto-listing").on("click", () => {
         button.setAttribute("id", res.listing.slug);
         button.setAttribute("class", "w3-button w3-black");
         button.addEventListener("click", function() {
-            alert("BUY THIS!");
             alert(res.listing.slug);
         });
 

@@ -3,26 +3,16 @@
   $('#openStore').on('change', function () {
     if($(this).prop('checked')){
                     var data = {
-                "handle": "",
-                "name": document.forms.profilefrm.name.value,
-                "location": document.forms.profilefrm.location.value,
-                "about": document.forms.profilefrm.about.value,
-                "shortDescription": document.forms.profilefrm.shortDesc.value,
-                "vendor": true,
+                "vendor": true
             }
-            coinAjax.profile("PUT", data).catch((e) => {
+            coinAjax.profile("PATCH", data).catch((e) => {
                 alert("411, something wrong!  ???" + e);
             });
     } else {
                             var data = {
-                "handle": "",
-                "name": document.forms.profilefrm.name.value,
-                "location": document.forms.profilefrm.location.value,
-                "about": document.forms.profilefrm.about.value,
-                "shortDescription": document.forms.profilefrm.shortDesc.value,
-                "vendor": false,
+                "vendor": false
             }
-            coinAjax.profile("PUT", data).catch((e) => {
+            coinAjax.profile("PATCH", data).catch((e) => {
                 alert("411, something wrong!  ???" + e);
             });
     }
@@ -45,19 +35,14 @@
         function showPosition(position) {
             x = position.coords.latitude + "," + position.coords.longitude;
             var data = {
-                "handle": "",
-                "name": document.forms.profilefrm.name.value,
-                "location": document.forms.profilefrm.location.value,
-                "about": document.forms.profilefrm.about.value,
-                "shortDescription": document.forms.profilefrm.shortDesc.value,
-                "nsfw": false,
-                "vendor": false,
-                "moderator": false,
                 "GPS": x
             }
-            coinAjax.profile("PUT", data).then((res) => {
+            coinAjax.profile("PATCH", data).then(() => {
+                coinAjax.profile("GET").then((res) => {
                 var y = document.getElementById("demo");
-                y.innerHTML = res.GPS;
+                y.innerHTML = res.GPS;    
+                })
+                
             }).catch((e) => {
                 alert("411, something wrong!  ???" + e);
             });
@@ -89,19 +74,13 @@
 
     } else {
                 var data = {
-                "handle": "",
-                "name": document.forms.profilefrm.name.value,
-                "location": document.forms.profilefrm.location.value,
-                "about": document.forms.profilefrm.about.value,
-                "shortDescription": document.forms.profilefrm.shortDesc.value,
-                "nsfw": false,
-                "vendor": false,
-                "moderator": false,
-                "GPS": x
+                "GPS": " "
             }
-            coinAjax.profile("PUT", data).then((res) => {
+            coinAjax.profile("PATCH", data).then(() => {
+                coinAjax.profile("GET").then((res) => {
                 var y = document.getElementById("demo");
                 y.innerHTML = res.GPS;
+                })
             }).catch((e) => {
                 alert("411, something wrong!  ???" + e);
             });

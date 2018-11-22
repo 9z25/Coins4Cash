@@ -1,232 +1,106 @@
-function Queue() {
-  this.image = {
-         filename :   ``,
-         hashes : [{
-             tiny :   ``,
-             small :   ``,
-             medium :   ``,
-             large :   ``,
-             original :  ``  
-        }]
-    };
-
-    this.profile = {
-     peerID :   ``,
-     handle :   ``,
-     name :   ``,
-     location :    ``,
-     about :   ``,
-     shortDescription :   ``,
-     nsfw :  ``,
-     vendor :   ``,
-     moderator :   ``,
-     contactInfo : {
-         website :   ``,
-         email :   ``,
-         phoneNumber :  ``  
+var queue = (function() {
+var image = null;
+var profile = null;
+var listing = {
+    "slug": "vintage-dress-physical-no-options",
+    "metadata": {
+      "contractType": "PHYSICAL_GOOD",
+      "format": "FIXED_PRICE",
+      "expiry": "2037-12-31T05:00:00.000Z",
+      "pricingCurrency": "USD"
     },
-     stats : {
-         followerCount :   ``,
-         followingCount :   ``,
-         listingCount :   ``,
-         ratingCount :   ``,
-         postCount :   ``,
-         averageRating :  ``  
-    },
-     bitcoinPubkey :   ``,
-     lastModified :   ``,
-     currencies : [
-          ``
-    ],
-     GPS :   ``
-}
-
-	this.listing = {
-    metadata: {
-      contractType:  ``,
-      format:  ``,
-      expiry:  ``,
-      pricingCurrency:  ``
-    },
-    item: {
-      title:  ``,
-      description:  ``,
-      processingTime:  ``,
-      price: ``,
-      tags: [
-         ``
+    "item": {
+      "title": "Vintage dress (physical; no options)",
+      "description": "This is a listing example.",
+      "processingTime": "3 days",
+      "price": 100,
+      "tags": [
+        "vintage dress"
       ],
-      images: [{
-        filename:  ``,
-        tiny:  ``,
-        small:  ``,
-        medium:  ``,
-        large:  ``,
-        original:  ``
-      }, {
-        filename:  ``,
-        tiny:  ``,
-        small:  ``,
-        medium:  ``,
-        large:  ``,
-        original:  ``
-      }, {
-        filename:  ``,
-        tiny:  ``,
-        small:  ``,
-        medium:  ``,
-        large:  ``,
-        original:  ``
-      }, {
-        filename:  ``,
-        tiny:  ``,
-        small:  ``,
-        medium:  ``,
-        large:  ``,
-        original:  ``
-      }],
-      categories: [
-         ``
+      "images": [],
+      "categories": [
+        "👚 Apparel & Accessories"
       ],
-      condition:  ``,
-      options: [{
-          name:  ``,
-          description:  ``,
-          variants: [{
-              name:  ``,
-              image: {
-                filename:  ``,
-                tiny:  ``,
-                small:  ``,
-                medium:  ``,
-                large:  ``,
-                original:  ``
-              }
-            },
-            {
-              name:  ``,
-              image: {
-                filename:  ``,
-                tiny:  ``,
-                small:  ``,
-                medium:  ``,
-                large:  ``,
-                original:  ``
-              }
-            },
-            {
-              name:  ``,
-              image: {
-                filename:  ``,
-                tiny:  ``,
-                small:  ``,
-                medium:  ``,
-                large:  ``,
-                original:  ``
-              }
-            }
-          ]
+      "condition": "New",
+      "options": [],
+      "skus": [],
+      "nsfw": false
+    },
+    "shippingOptions": [{
+      "name": "Worldwide",
+      "type": "FIXED_PRICE",
+      "regions": [
+        "ALL"
+      ],
+      "services": [{
+          "name": "Standard",
+          "price": 0,
+          "estimatedDelivery": "3 days"
         },
         {
-          name:  ``,
-          description:  ``,
-          variants: [{
-              name:  ``
-            },
-            {
-              name:  ``
-            },
-            {
-              name:  ``
-            },
-            {
-              name:  ``
-            }
-          ]
-        }
-      ],
-      skus: [{
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }, {
-        variantCombo: [],
-        productID:  ``,
-        surcharge: ``,
-        quantity: ``
-      }],
-      nsfw: ``
-    },
-    shippingOptions: [{
-      name:  ``,
-      type:  ``,
-      regions: [
-         ``
-      ],
-      services: [{
-          name:  ``,
-          price: ``,
-          estimatedDelivery:  ``
-        },
-        {
-          name:  ``,
-          price: ``,
-          estimatedDelivery:  ``
+          "name": "Express",
+          "price": 1,
+          "estimatedDelivery": "3 days"
         }
       ]
     }],
-    taxes: [],
-    coupons: [],
-    moderators: [
-    	 ``,
-    	 ``
+    "taxes": [],
+    "coupons": [],
+    "moderators": [
+    	"QmamG5uQjRqrdxAxp4DJK4TLvs2Yet8Nuiztip4ALD7i1U",
+    	"Qmbh95GgLueUusSgm4tUhHFEZA6hNuB8yYAgzi1FCDQX2G"
     	],
-    termsAndConditions:  ``,
-    refundPolicy:  ``
-  }
+    "termsAndConditions": "Terms and conditions.",
+    "refundPolicy": "Refund policy."
+  };
+var wallet = null;
+let dispute = {
+	"orderId": "",
+	"claim": ""
+}
+let spend = {
+    "wallet": "TBTC",
+    "address": "",
+    "amount": "",
+    "feeLevel": "",
+    "memo": "",
+}
+let follow = {
+	"id":""
+}
+ 
 
+return {
+returnProfile: () => {
+	return profile;
+},
+returnBalance: () => {
+	return JSON.stringify(balance);
+},
+loadProfile: () => {
+	coinAjax.profile("GET").then(data => profile = data);
+},
 
-  
+loadSpend: () => {
+	return spend;
+},
+
+loadDispute: (oid,r) => {
+	dispute.orderId = oid;
+	dispute.claim = r;
+	return dispute;
+},
+loadListing: () => {
+	return listing;
+},
+loadListingImg: (json) => {
+	listing.push(json);
+	return;
+},
+loadFollower: (pid) => {
+	follow.id = pid;
+	return follow;
 }
-Queue.prototype.addImage = function(obj) {
-  this.data.extend(record);
 }
-Queue.prototype.remove = function() {
-  this.data.pop();
-}
+
+})()
