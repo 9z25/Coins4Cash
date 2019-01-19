@@ -5,9 +5,30 @@ const opn = require("opn");
 const fs = require("fs");
 var bodyParser = require("body-parser");
 const app = express();
+var path = require("path");
 const port = 5000;
+var mustache = require('mustache-express');
+
 
 app.use(bodyParser.json());
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'mustache-express');
+
+var songs = {
+	1 : ''
+}
+
+app.get( '/audio/:_songId', function( req, res ) {
+
+    if( req.params._songId == 1 ) {
+        res.sendFile(__dirname + '/public/client/audio/openplayer.html');
+    } else {
+        res.sendFile(__dirname + '/public/client/audio/openplayer1.html');
+    }
+      });
+app.get( '/rlWebsiteDev/', function( req, res ) {
+    res.sendFile(__dirname + '/public/client/webserver/index.html');
+  });
 
 var router = express.Router();
 const axios = require("axios");
@@ -430,14 +451,11 @@ app.use(allowCrossDomain)
 app.use("/", express.static(__dirname + "/public"))
 
 
-rootCas
-  .addFile(__dirname + '\\freshmintrecords_com.ca-bundle')
-  ;
 
 
 var options = {
-	ca: rootCas,
-	cert: fs.readFileSync('\\freshmintrecords_com.crt'),
-	key: fs.readFileSync('\\freshmintrecords_com.txt')
+	ca: fs.readFileSync(__dirname + '\\freshmintrecords_com.ca-bundle'),
+	cert: fs.readFileSync(__dirname + '\\freshmintrecords_com.crt'),
+	key: fs.readFileSync(__dirname + '\\freshmintrecords_com.pem')
 }
 https.createServer(options, app).listen(port);

@@ -24,11 +24,14 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "blockstack": "^0.15.0",
+    "blockstack": "^0.15.1",
     "body-parser": "^1.18.3",
     "buffer": "^5.2.1",
     "coffeescript": "^2.3.2",
     "fs": "0.0.1-security",
-    "install": "^0.12.2"
+    "install": "^0.12.2",
+    "jplayer": "^2.9.2",
+    "mustache-express": "^1.2.8",
+    "ssl-root-cas": "^1.2.5"
   }
 }
